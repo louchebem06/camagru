@@ -1,0 +1,37 @@
+version: "3.9"
+services:
+  apache2-php:
+    depends_on:
+      - mysql
+    build: ./srcs/php-apache
+    image: php-apache
+    ports:
+      - "80:80"
+    volumes:
+      - website:/var/www/html
+    networks:
+      - bledda-network
+    restart: always
+
+  mysql:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    env_file:
+      - .env
+    networks:
+      - bledda-network
+    restart: always
+
+volumes:
+    website:
+        name: website
+        driver: local
+        driver_opts:
+            type: none  
+            o: bind
+            device: ./website
+
+networks:
+    bledda-network:
+        name: bledda-network
+        driver: bridge
