@@ -8,12 +8,15 @@ services:
     image: php-apache
     ports:
       - "80:80"
+      - "25:25"
     volumes:
       - website:/var/www/html
+      - ./php.ini:/etc/php/8.1/apache2/php.ini
     networks:
       - bledda-network
     env_file:
       - .env
+    hostname: apache2-php8.1-camagru
     restart: always
 
   mysql:
@@ -24,6 +27,7 @@ services:
       - .env
     networks:
       - bledda-network
+    hostname: mysql-camagru
     restart: always
 
 volumes:

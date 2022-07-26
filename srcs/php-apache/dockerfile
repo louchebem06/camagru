@@ -16,5 +16,10 @@ RUN apt upgrade -y
 RUN service apache2 restart
 RUN echo "ServerName 127.0.0.1" >> "/etc/apache2/apache2.conf"
 RUN apt install php8.1-mysql -y
+RUN apt install -y sendmail sendmail-cf m4
+RUN echo "define('SMART_HOST','smtp.sipartech.com')" >> /etc/mail/sendmail.mc
+RUN echo "GENERICS_DOMAIN(localhost.localdomain localhost)dnl" >> /etc/mail/sendmail.mc
+RUN echo "MASQUERADE_AS(42nice.fr)dnl" >> /etc/mail/sendmail.mc
+RUN m4 /etc/mail/sendmail.mc > /etc/mail/sendmail.cf
 
-CMD ["apachectl", "-D", "FOREGROUND"]
+CMD service sendmail start && apachectl -D FOREGROUND
