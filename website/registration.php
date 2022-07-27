@@ -1,4 +1,15 @@
 <?php
+session_start();
+
+require($_SERVER['DOCUMENT_ROOT'] . "/functions/validUser.php");
+
+if (isset($_SESSION['id']) && !empty($_SESSION['id'])) {
+	if (validUser($_SESSION['id'])) {
+		header("Location: /");
+		exit();
+	}
+}
+
 function printValueGet(string $name) :void {
 	if (isset($_GET[$name]) && !empty($_GET[$name]))
 		echo "value=\"" . $_GET[$name] . '"';
@@ -41,7 +52,7 @@ else if (isset($_GET['error']))
 	<div class="website">
 
 		<?php if (isset($error) && !empty($error)) { ?>
-				<div class="box error">
+				<div class="box">
 					<p><b>Error: </b><?php echo $error ?></p>
 				</div>
 		<?php } ?>
@@ -66,6 +77,10 @@ else if (isset($_GET['error']))
 				</div>
 				<input class="submit" type="submit" value="Register"/>
 			</form>
+			<h3 class="or">OR</h3>
+			<div class="box">
+				<a class="login-btn" href="/login.php">Login</a>
+			</div>
 		<?php } else { ?>
 			<div class="box error">
 				<p><b>Succes: </b>Your account has been created, please confirm your email address</p>

@@ -1,0 +1,33 @@
+.profil {
+	display: flex;
+}
+
+.profil img {
+	width: 150px;
+	height: auto;
+	display: block;
+	border-radius: 150px;
+	padding: 20px;
+}
+
+.profil .info-profil {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	justify-content: space-around;
+}
+
+.profil .info-profil .first, .profil .info-profil .second {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.profil .info-profil .first a {
+	text-decoration: none;
+	color: black;
+	border-radius: 5px;
+	border: 1px solid black;
+	padding: 5px 10px;
+}

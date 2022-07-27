@@ -13,6 +13,7 @@ RUN wget -qO - https://packages.sury.org/php/apt.gpg | apt-key add -
 RUN apt update
 RUN apt install php8.1 -y
 RUN apt upgrade -y
+RUN a2dismod autoindex -f
 RUN service apache2 restart
 RUN echo "ServerName 127.0.0.1" >> "/etc/apache2/apache2.conf"
 RUN apt install php8.1-mysql -y

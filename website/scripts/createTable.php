@@ -6,9 +6,18 @@ $tableUser = "CREATE TABLE IF NOT EXISTS user
         `username`	VARCHAR(255) NOT NULL UNIQUE,
 		`password`	VARCHAR(255) NOT NULL,
         `token`		VARCHAR(255) NOT NULL,
+		`img_id`	INT	NULL UNIQUE,
 		`activate`	boolean DEFAULT false
+	);";
+
+$tableImg = "CREATE TABLE IF NOT EXISTS img
+	(
+		`img_id`	INT PRIMARY KEY,
+		`user_id`	INT NOT NULL,
+		`file`		VARCHAR(255) NOT NULL UNIQUE
 	);";
 
 require($_SERVER['DOCUMENT_ROOT'] . "/utilitys/connect.php");
 
 $conn->exec($tableUser);
+$conn->exec($tableImg);
