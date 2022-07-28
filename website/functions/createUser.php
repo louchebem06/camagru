@@ -24,11 +24,9 @@ function createUser(string $email, string $username, string $password) {
 		return $e;
 	}
 	if ($exec) {
-		$headers = 'From: camagru@42nice.fr' . "\r\n" .
-		'Reply-To: camagru@42nice.fr' . "\r\n" .
-		'X-Mailer: PHP/' . phpversion();
-		$subject = "Confirm your account camagru";
-		$message = "Hi {$username}, please valid your account http://{$_SERVER['HTTP_HOST']}/activate.php?t={$token}";
+		$headers = 'Content-Type: text/html; charset="UTF-8"'."n";
+		$subject = 'Confirm your account camagru';
+		$message = "Hi {$username}, please valid your account <a href=\"http://{$_SERVER['HTTP_HOST']}/activate.php?t={$token}\" target=\"_blank\">Activate</a>";
 		mail($email, $subject, $message, $headers);
 		return (true);
 	}

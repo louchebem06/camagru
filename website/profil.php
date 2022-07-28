@@ -16,8 +16,14 @@
 	require($_SERVER['DOCUMENT_ROOT'] . "/functions/getUsername.php");
 	require($_SERVER['DOCUMENT_ROOT'] . "/functions/getPicture.php");
 
-	$username = getUsername();
-	$profilPicture = getPicture();
+	$id = $_SESSION['id'];
+	if (isset($_GET['id']) && !empty($_GET['id']) && validUser($_GET['id']))
+		$id = $_GET['id'];
+	else if (isset($_GET['id']) && $id != $_GET['id'])
+		$profilNotFound = true;
+
+	$username = getUsername($id);
+	$profilPicture = getPicture($id);
 	$publication = 0;
 	$subscribe = 0;
 	$subscription = 0;
@@ -57,12 +63,21 @@
 	
 	<div class="website">
 
+		<?php if (isset($profilNotFound) && $profilNotFound) { ?>
+
+		<div class="box">
+			<p>Profil not found</p>
+		</div>
+
+		<?php } else { ?>
+
 		<div class="box profil">
 			<img alt="picture-profil" src="<?php echo $profilPicture ?>"/>
 			<div class="info-profil">
 				<div class="first">
 					<p><?php echo $username ?></p>
-					<a href="#"><b>Edition</b></a>
+					<?php if ($id == $_SESSION['id']) ?>
+						<a href="editProfil.php"><b>Edition</b></a>
 				</div>
 				<div class="second">
 					<p><?php nbPublication()?></p>
@@ -71,10 +86,14 @@
 				</div>
 			</div>
 		</div>
+		
+		<?php if ($id == $_SESSION['id']) { ?>
+			<div class="box">
+				<a class="disconnect-btn" href="/scripts/disconnect.php">Disconnect</a>
+			</div>
+		<?php } ?>
 
-		<div class="box">
-			<a class="disconnect-btn" href="/scripts/disconnect.php">Disconnect</a>
-		</div>
+		<?php } ?>
 		
 	</div>
 

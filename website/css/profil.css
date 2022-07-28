@@ -31,3 +31,23 @@
 	border: 1px solid black;
 	padding: 5px 10px;
 }
+
+.formEditProfil form {
+	display: flex;
+	flex-direction: column;
+}
+
+.formEditProfil form input.submit {
+	border: none;
+	background-color: #AAC9FF;
+	color: white;
+	padding: 10px 0;
+	width: 50%;
+	border-radius: 50px;
+	margin: auto;
+	cursor: pointer;
+}
+
+.formEditProfil form input.submit:hover{
+	background-color: #77A7FF;
+}

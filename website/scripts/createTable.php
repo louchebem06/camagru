@@ -17,7 +17,7 @@ $tableImg = "CREATE TABLE IF NOT EXISTS img
 		`file`		VARCHAR(255) NOT NULL UNIQUE
 	);";
 
-require($_SERVER['DOCUMENT_ROOT'] . "/utilitys/connect.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/utilitys/connect.php");
 
 $conn->exec($tableUser);
 $conn->exec($tableImg);
