@@ -1,12 +1,12 @@
 <?php
 session_start();
 
+$page = "/login.php";
+
 if (isset($_SESSION['id']) && !empty($_SESSION['id'])) {
 	header("Location: $page?activate" . $value);
 	exit();
 }
-
-$page = "/login.php";
 
 if (!isset($_GET['t']) || empty($_GET['t'])) {
 	header("Location: $page?empty" . $value);

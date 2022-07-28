@@ -17,7 +17,16 @@ $tableImg = "CREATE TABLE IF NOT EXISTS img
 		`file`		VARCHAR(255) NOT NULL UNIQUE
 	);";
 
+$tableComment = "CREATE TABLE IF NOT EXISTS comment
+	(
+		`comment_id`	INT PRIMARY KEY,
+		`img_id`		INT NOT NULL,
+		`user_id`		INT NOT NULL,
+		`comment`		VARCHAR(255) NOT NULL UNIQUE
+	);";
+
 require_once($_SERVER['DOCUMENT_ROOT'] . "/utilitys/connect.php");
 
 $conn->exec($tableUser);
 $conn->exec($tableImg);
+$conn->exec($tableComment);
