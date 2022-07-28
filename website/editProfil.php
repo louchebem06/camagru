@@ -71,8 +71,16 @@
 			</form>
 		</div>
 		<div class="box formEditProfil">
+			<p>
+				<?php
+					if (isset($_GET['e']) && $_GET['e'] == "password")
+						echo "Password not secure or Password and confirm passord is dirent";
+					else if (isset($_GET['ok']) && $_GET['ok'] == "password")
+						echo "Password changed";
+				?>
+			</p>
 			<h2>Password</h2>
-			<form method="POST" action="#">
+			<form method="POST" action="/scripts/updatePassword.php">
 				<input type="password" placeholder="password" name="password" required/>
 				<input type="password" placeholder="confirm password" name="repassword" required/>
 				<input class="submit" type="submit" value="Save"/>
