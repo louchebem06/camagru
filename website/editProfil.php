@@ -88,8 +88,8 @@
 		</div>
 		<div class="box formEditProfil">
 			<h2>Image</h2>
-			<form method="POST" action="#" enctype="multipart/form-data">
-				<input type="file" name="picture" accept="image/*" />
+			<form method="POST" action="/scripts/updatePicture.php" enctype="multipart/form-data">
+				<input type="file" name="file" accept="image/*" />
 				<input class="submit" type="submit" value="Save"/>
 			</form>
 			<a href="#">Remove actual picture</a>
