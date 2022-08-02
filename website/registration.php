@@ -20,7 +20,6 @@ if (isset($_SESSION['id']) && !empty($_SESSION['id'])) {
 	<title>Registration</title>
 	<link href="/css/style.css" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,1,200" />
-	<script src="/js/register.js"></script>
 </head>
 <body>
 
@@ -28,7 +27,7 @@ if (isset($_SESSION['id']) && !empty($_SESSION['id'])) {
 	
 	<div class="website" id="website">
 
-		<form class="box form register" method="POST" action="./scripts/registrationForm.php" onsubmit="send(event,this)">
+		<form id="form" class="box form register" method="POST" action="./scripts/registrationForm.php" >
 			<div class="input">
 				<span class="material-symbols-outlined">mail</span>	
 				<input type="email" placeholder="Email" name="email" required/>
@@ -45,7 +44,7 @@ if (isset($_SESSION['id']) && !empty($_SESSION['id'])) {
 				<span class="material-symbols-outlined">password</span>
 				<input type="password" placeholder="Confirm password" name="repassword" required/>
 			</div>
-			<input class="submit" type="submit" value="Register"/>
+			<input class="submit" type="submit"value="Register"/>
 		</form>
 		<h3 class="or">OR</h3>
 		<div class="box">
@@ -57,4 +56,13 @@ if (isset($_SESSION['id']) && !empty($_SESSION['id'])) {
 	<?php include($_SERVER['DOCUMENT_ROOT'] . "/footer.php") ?>
 
 </body>
+	<script type="module">
+		import { send } from "/js/register.js";
+
+		const form = document.querySelector('#form');
+
+		form.addEventListener('submit', e => {
+			send(e, form);
+		})
+	</script>
 </html>

@@ -1,11 +1,14 @@
 <?php
 session_start();
-
-$page = "/login.php";
+header('Content-Type: application/json; charset=utf-8');
 
 if ( !isset($_POST["username"])  || empty($_POST["username"])
 	|| !isset($_POST["password"]) || empty($_POST["password"]) ) {
-	header("Location: $page?empty");
+	$return = [
+		"msg"=>"Incorect value send",
+	];
+	
+	echo json_encode($return);
 	exit();
 }
 
@@ -19,7 +22,11 @@ $sql = "SELECT * FROM user WHERE username='{$username}'";
 $state = $conn->query($sql);
 $result = $state->fetch(PDO::FETCH_ASSOC);
 if ($result == false) {
-	header("Location: $page?notValid");
+	$return = [
+		"msg"=>"Username or password is incorect",
+	];
+	
+	echo json_encode($return);
 	exit();
 }
 
@@ -30,16 +37,28 @@ $user_id = $user['user_id'];
 $password_bdd = $user['password'];
 
 if ($username != $username_bdd || $password_bdd != hash('sha256', $password)) {
-	header("Location: $page?notValid");
+	$return = [
+		"msg"=>"Username or password is incorect",
+	];
+	
+	echo json_encode($return);
 	exit();
 }
 
 if (!$activate) {
-	header("Location: $page?notActivate");
+	$return = [
+		"msg"=>"Your account is not activate",
+	];
+	
+	echo json_encode($return);
 	exit();
 }
 
 $_SESSION['id'] = $user_id;
 
-header("Location: /");
+$return = [
+	"msg"=>"go home",
+];
+
+echo json_encode($return);
 exit();

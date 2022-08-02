@@ -3,8 +3,7 @@
 		<h1>Camagru</h1>
 		<div class="icons">
 			<a href="/">
-				<?php if (basename($_SERVER['PHP_SELF']) == "index.php"
-					|| basename($_SERVER['PHP_SELF']) == "login.php") { ?>
+				<?php if (basename($_SERVER['PHP_SELF']) == "index.php") { ?>
 					<img alt="logo home" src="/img/home1.svg"/>
 				<?php } else { ?>
 					<img alt="logo home" src="/img/home0.svg"/>

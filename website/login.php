@@ -9,21 +9,6 @@
 			exit();
 		}
 	}
-
-	if (isset($_GET['empty']))
-		$error = "Incorect value send";
-	else if (isset($_GET['notFound']))
-		$error = "Account not found";
-	else if (isset($_GET['activate']))
-		$error = "Your account and already activated";
-	else if (isset($_GET['error']))
-		$error = "An error these product";
-	else if (isset($_GET['ok']))
-		$ok = "Your account has been activated, you can log in";
-	else if (isset($_GET['notActivate']))
-		$error = "Your account is not activate";
-	else if (isset($_GET['notValid']))
-		$error = "Username or password is incorect";
 ?>
 
 <!DOCTYPE html>
@@ -40,19 +25,9 @@
 
 	<?php include($_SERVER['DOCUMENT_ROOT'] . "/header.php") ?>
 	
-	<div class="website">
+	<div id="website" class="website">
 
-		<?php if (isset($error) && !empty($error)) { ?>
-				<div class="box">
-					<p><b>Error: </b><?php echo $error ?></p>
-				</div>
-		<?php } else if (isset($ok) && !empty($ok)){ ?>
-				<div class="box">
-					<p><b>Success: </b><?php echo $ok ?></p>
-				</div>
-		<?php } ?>
-
-		<form class="box form register" method="POST" action="./scripts/loginForm.php" >
+		<form id="form" class="box form register" method="POST" action="./scripts/loginForm.php">
 			<div class="input">
 				<span class="material-symbols-outlined">person</span>
 				<input type="text" placeholder="Username" name="username" required/>
@@ -69,4 +44,15 @@
 	<?php include($_SERVER['DOCUMENT_ROOT'] . "/footer.php") ?>
 
 </body>
+
+	<script type="module">
+		import { send } from "/js/login.js";
+
+		const form = document.querySelector('#form');
+
+		form.addEventListener('submit', e => {
+			send(e, form);
+		})
+	</script>
+
 </html>

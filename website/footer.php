@@ -1,5 +1,7 @@
 <footer>
 	<?php
+	require_once($_SERVER['DOCUMENT_ROOT'] . "/functions/validUser.php");
+
 	if (isset($_SESSION['id']) && !empty($_SESSION['id'])) {
 		if (validUser($_SESSION['id'])) { ?>
 			<div class="title">

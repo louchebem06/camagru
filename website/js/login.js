@@ -1,5 +1,4 @@
 import {addError} from "./addError.js";
-import {addSuccess} from "./addSuccess.js"
 
 function send(e,form) {
 	let result = fetch(form.action, {method:'post', body: new FormData(form)})
@@ -12,10 +11,8 @@ function send(e,form) {
 	result.then(async function(response) {
 		let msg = response['msg'];
 
-		if (msg == "ok") {
-			const container = document.getElementById('website');
-			container.textContent = '';
-			addSuccess("Please check your mail for activate account");
+		if (msg == "go home") {
+			document.location.href="/";
 		} else {
 			addError(msg);
 		}

@@ -8,9 +8,6 @@
 			header("Location: /scripts/disconnect.php");
 			exit();
 		}
-	} else {
-		header("Location: /login.php");
-		exit();
 	}
 
 	require($_SERVER['DOCUMENT_ROOT'] . "/functions/getUsername.php");
