@@ -19,6 +19,7 @@ if (isset($_SESSION['id']) && !empty($_SESSION['id'])) {
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Registration</title>
 	<link href="/css/style.css" rel="stylesheet" type="text/css">
+	<link href="/css/checkPassword.css" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,1,200" />
 </head>
 <body>
@@ -34,15 +35,33 @@ if (isset($_SESSION['id']) && !empty($_SESSION['id'])) {
 			</div>
 			<div class="input">
 				<span class="material-symbols-outlined">person</span>
-				<input type="text" placeholder="Username" name="username" required/>
+				<input id="username" type="text" placeholder="Username" name="username" required/>
 			</div>
 			<div class="input">
 				<span class="material-symbols-outlined">password</span>
-				<input type="password" placeholder="Password" name="password" required/>
+				<input id="password" type="password" placeholder="Password" name="password" required/>
 			</div>
 			<div class="input">
 				<span class="material-symbols-outlined">password</span>
-				<input type="password" placeholder="Confirm password" name="repassword" required/>
+				<input id="repassword" type="password" placeholder="Confirm password" name="repassword" required/>
+			</div>
+			<div class="check-password">
+				<div class="emoji">
+					<?php
+						for ($i = 0; $i < 7; $i++) {
+							echo "<p id=\"emoji-" . $i . "\"></p>";
+						}
+					?>
+				</div>
+				<div class="rules">
+					<p>Password dont match username</p>
+					<p>Password math confirm password</p>
+					<p>Password content Uppercase</p>
+					<p>Password content LowerCase</p>
+					<p>Password content Digit</p>
+					<p>Password content Symbole</p>
+					<p>Password len >= 8</p>
+				</div>
 			</div>
 			<input class="submit" type="submit"value="Register"/>
 		</form>
@@ -56,6 +75,8 @@ if (isset($_SESSION['id']) && !empty($_SESSION['id'])) {
 	<?php include($_SERVER['DOCUMENT_ROOT'] . "/footer.php") ?>
 
 </body>
+	<script type="text/javascript" src="/js/checkPassword.js" ></script>
+
 	<script type="module">
 		import { send } from "/js/register.js";
 
@@ -65,4 +86,6 @@ if (isset($_SESSION['id']) && !empty($_SESSION['id'])) {
 			send(e, form);
 		})
 	</script>
+
+	
 </html>
