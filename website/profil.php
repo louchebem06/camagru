@@ -24,27 +24,6 @@
 
 	$username = getUsername($id);
 	$profilPicture = getPicture($id);
-	$publication = 0;
-	$subscribe = 0;
-	$subscription = 0;
-
-	function nbPublication() : void {
-		global $publication;
-
-		echo "{$publication} publication" . ($publication > 1 ? "s" : "" ) ;
-	}
-
-	function nbSubscribe() : void {
-		global $subscribe;
-
-		echo "{$subscribe} subscribe" . ($subscribe > 1 ? "s" : "" ) ;
-	}
-
-	function nbSubscription() : void {
-		global $subscription;
-
-		echo "{$subscription} subscription" . ($subscription > 1 ? "s" : "" ) ;
-	}
 ?>
 
 <!DOCTYPE html>
@@ -73,18 +52,9 @@
 
 		<div class="box profil">
 			<img alt="picture-profil" src="<?php echo $profilPicture ?>"/>
-			<div class="info-profil">
-				<div class="first">
-					<p><?php echo $username ?></p>
-					<?php if ($id == $_SESSION['id']) ?>
-						<a href="editProfil.php"><b>Edition</b></a>
-				</div>
-				<div class="second">
-					<p><?php nbPublication()?></p>
-					<p><?php nbSubscribe()?></p>
-					<p><?php nbSubscription()?></p>
-				</div>
-			</div>
+			<p><?php echo $username ?></p>
+			<?php if ($id == $_SESSION['id']) ?>
+				<a href="editProfil.php"><b>Edition</b></a>
 		</div>
 		
 		<?php if ($id == $_SESSION['id']) { ?>

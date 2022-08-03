@@ -6,7 +6,7 @@ if (!isset($_SESSION['id']) || empty($_SESSION['id'])) {
 }
 $id = $_SESSION['id'];
 
-require($_SERVER['DOCUMENT_ROOT'] . "/functions/uploadImage.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/functions/uploadImage.php");
 require_once($_SERVER['DOCUMENT_ROOT'] . "/utilitys/connect.php");
 
 $id_img = uploadImage();

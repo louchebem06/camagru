@@ -1,5 +1,5 @@
 <?php
-function uploadImage() : string|bool {
+function uploadImage() {
 	if (!isset($_SESSION['id'])
 		|| empty($_SESSION['id'])
 		|| !isset($_FILES['file']))
@@ -12,30 +12,29 @@ function uploadImage() : string|bool {
 	$type = "." . explode("/", $type)[1];
 	$mime = mime_content_type($tmpName);
 	$name = bin2hex(openssl_random_pseudo_bytes(16));
-	$filename = "{$dir}/{$name}.{$type}";
+	$filenameReal = "{$dir}/{$name}.{$type}";
+	$filenameWeb = "/upload/{$name}.{$type}";
+
 	if ($size > 2040000 || strncmp($mime, "image", 5) != 0)
 		return (false);
 
 	if (!file_exists($dir))
 		mkdir($dir);
-	move_uploaded_file($tmpName, $filename);
+	move_uploaded_file($tmpName, $filenameReal);
 
-	include($_SERVER['DOCUMENT_ROOT'] . "/utilitys/connect.php"); 
+	include($_SERVER['DOCUMENT_ROOT'] . "/utilitys/connect.php");
 
 	try {
-		$sql = "INSERT INTO `user`(`user_id`, `file`)
-		VALUES (:user_id, :file)";
-		$res = $conn->prepare($sql);
-		$exec = $res->execute(
-					array(
-						":user_id"=>$_SESSION['id'],
-						":file"=>$filename
-					)
-		);
+		$data = [
+			'user_id' => $_SESSION['id'],
+			'file' => $filenameWeb
+		];
+		$sql = "INSERT INTO img (`user_id`, `file`) VALUES (:user_id, :file)";
+		$stmt = $conn->prepare($sql);
+		$exec = $stmt->execute($data);
 		if ($exec)
-			return $conn->lastInsertId();
+			return ($conn->lastInsertId());
 		return (false);
-
 	}
 	catch (Exception $e) {
 		return (false);

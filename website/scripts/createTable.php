@@ -12,14 +12,14 @@ $tableUser = "CREATE TABLE IF NOT EXISTS user
 
 $tableImg = "CREATE TABLE IF NOT EXISTS img
 	(
-		`img_id`	INT PRIMARY KEY,
+		`img_id`	INT AUTO_INCREMENT PRIMARY KEY,
 		`user_id`	INT NOT NULL,
 		`file`		VARCHAR(255) NOT NULL UNIQUE
 	);";
 
 $tableComment = "CREATE TABLE IF NOT EXISTS comment
 	(
-		`comment_id`	INT PRIMARY KEY,
+		`comment_id`	INT AUTO_INCREMENT PRIMARY KEY,
 		`img_id`		INT NOT NULL,
 		`user_id`		INT NOT NULL,
 		`comment`		VARCHAR(255) NOT NULL UNIQUE
