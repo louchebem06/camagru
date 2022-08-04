@@ -1,0 +1,12 @@
+.filter-elements img {
+	width: 20%;
+	border: 1px solid black;
+}
+
+#canvas, #video {
+	width: 100%;
+}
+
+#canvas {
+	display: none;
+}
