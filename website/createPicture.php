@@ -51,7 +51,19 @@
 				}
 			?>
 		</div>
-
+		<div class="box">
+			<div class="filter-edit nonSelectionnable" id="edit">
+				<div class="block nw"></div>
+				<div class="block n"></div>
+				<div class="block ne"></div>
+				<div class="block w" id="left"></div>
+				<div class="block e" id="right"></div>
+				<div class="block sw"></div>
+				<div class="block s"></div>
+				<div class="block se"></div>
+				<img draggable="false" src="/img/filter/chapeau0.png" />
+			</div>
+		</div>
 		<div class="box">
 			<video id="video">Video stream not available.</video>
 			<canvas id="canvas"></canvas>
@@ -62,6 +74,77 @@
 	<?php include($_SERVER['DOCUMENT_ROOT'] . "/footer.php") ?>
 
 </body>
+	<script>
+
+		const edit = document.getElementById("edit");
+		const editRight = document.getElementById("right");
+		const editLeft = document.getElementById("left");
+		var clientX;
+		var moveX = false;
+		var moveR = false;
+		var moveL = false
+
+		function mousemove(event){
+			let g_clientX = event.clientX;
+			if (moveX) {
+				const width = edit.clientWidth;
+				const height = edit.clientHeight;
+				const newSize = width + (moveR ? (g_clientX - clientX) : (clientX - g_clientX));
+				edit.style.width = newSize + "px";
+				edit.style.height = height + "px";
+			}
+		}
+
+		editRight.addEventListener("mousedown", e => {
+			// clientX = e.clientX;
+			// console.log(clientX);
+			moveX = true;
+			moveR = true;
+		});
+
+		editRight.addEventListener("mousemove", e => {
+			clientX = e.clientX;
+			if (moveX) {
+				console.log(g_clientX)
+				const width = edit.clientWidth;
+				const height = edit.clientHeight;
+				const newSize = width + (moveR ? (g_clientX - clientX) : (clientX - g_clientX));
+				edit.style.width = newSize + "px";
+				edit.style.height = height + "px";
+			}
+			console.log(e);
+		});
+
+		editRight.addEventListener("mouseup", e => {
+			clientX = e.clientX;
+			moveX = false;
+			moveR = false;
+		});
+
+		editRight.addEventListener("mouseout", e => {
+			moveX = false;
+		});
+
+		editLeft.addEventListener("mousedown", e => {
+			clientX = e.clientX;
+			moveX = true;
+			moveL = true;
+		});
+
+		editLeft.addEventListener("mouseup", e => {
+			clientX = e.clientX;
+			moveX = false;
+			moveL = false;
+		});
+
+		editLeft.addEventListener("mouseout", e => {
+			moveX = false;
+		});
+
+		window.addEventListener('mousemove', mousemove);
+
+	</script>
+
 	<script>
 		
 		let filters = document.getElementById('filter');
@@ -83,6 +166,7 @@
 			const context = canvas.getContext('2d');
 			context.drawImage(filter, x, y, sizeX, sizeY);
 		}
+
 		function activateWebcam() {
 			if (navigator.mediaDevices.getUserMedia) {
 				navigator.mediaDevices.getUserMedia({
@@ -110,6 +194,7 @@
 			video.style.display = "none";
 			canvas.style.display = "block";
 			filters.style.display = "block";
+			addFilter();
 			disabledWebcam();
 		})
 
