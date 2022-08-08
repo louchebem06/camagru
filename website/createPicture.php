@@ -42,10 +42,12 @@
 	
 	<div class="website">
 
-		<div class="box filter-elements">
+		<div class="box filter-elements" id="filter">
 			<?php
+				$id = 0;
 				foreach ($filter as $v) {
-					echo "<img src=\"{$v}\"/>";
+					echo "<img id=\"filter-{$id}\" src=\"{$v}\"/>";
+					$id++;
 				}
 			?>
 		</div>
@@ -60,10 +62,13 @@
 	<?php include($_SERVER['DOCUMENT_ROOT'] . "/footer.php") ?>
 
 </body>
-<script>
+	<script>
 		
+		let filters = document.getElementById('filter');
 		let video = document.getElementById('video');
 		let canvas = document.getElementById('canvas');
+
+		filters.style.display = "none";
 
 		function takepicture() {
 			const context = canvas.getContext('2d');
@@ -74,8 +79,16 @@
 			const data = canvas.toDataURL('image/png');
 		}
 
-		if (navigator.mediaDevices.getUserMedia) {
-			navigator.mediaDevices.getUserMedia({video: true, audio: false})
+		function writeElement(filter, x, y, sizeX, sizeY) {
+			const context = canvas.getContext('2d');
+			context.drawImage(filter, x, y, sizeX, sizeY);
+		}
+		function activateWebcam() {
+			if (navigator.mediaDevices.getUserMedia) {
+				navigator.mediaDevices.getUserMedia({
+					video: true,
+					audio: false
+				})
 				.then(function(stream) {
 					video.srcObject = stream;
 					video.play();
@@ -83,13 +96,42 @@
 				.catch((err) => {
 					console.error(`An error occurred: ${err}`);
 				});
+			}
 		}
+
+		function disabledWebcam() {
+			/* TODO DISABLED WEBCAM */
+		}
+
+		activateWebcam();
 
 		video.addEventListener("click", () => {
 			takepicture();
 			video.style.display = "none";
 			canvas.style.display = "block";
+			filters.style.display = "block";
+			disabledWebcam();
 		})
+
+		let filter = [];
+		for (let i = 0; i < 9; i++) {
+			filter.push(document.getElementById("filter-" + i))
+		}
+		
+		for (let i = 0; i < 9; i++) {
+			filter[i].addEventListener("click", e => {
+				writeElement(filter[i], 10, 10, 150, 150);
+			});
+		}
+
+		document.addEventListener("keydown", e => {
+			if (e.key == "Escape") {
+				activateWebcam();
+				video.style.display = "block";
+				canvas.style.display = "none";
+				filters.style.display = "none";
+			}
+		});
 
 	</script>
 </html>
