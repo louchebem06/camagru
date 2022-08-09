@@ -56,7 +56,7 @@
 				<div class="block nw"></div>
 				<div class="block n"></div>
 				<div class="block ne"></div>
-				<div class="block w" id="left"></div>
+				<div class="block w"></div>
 				<div class="block e" id="right"></div>
 				<div class="block sw"></div>
 				<div class="block s"></div>
@@ -78,70 +78,60 @@
 
 		const edit = document.getElementById("edit");
 		const editRight = document.getElementById("right");
-		const editLeft = document.getElementById("left");
-		var clientX;
 		var moveX = false;
-		var moveR = false;
-		var moveL = false
+		var valX;
 
-		function mousemove(event){
-			let g_clientX = event.clientX;
-			if (moveX) {
-				const width = edit.clientWidth;
-				const height = edit.clientHeight;
-				const newSize = width + (moveR ? (g_clientX - clientX) : (clientX - g_clientX));
-				edit.style.width = newSize + "px";
-				edit.style.height = height + "px";
-			}
-		}
+		// function mousemove(event){
+		// 	let g_clientX = event.clientX;
+		// 	if (moveX) {
+		// 		const width = edit.clientWidth;
+		// 		const height = edit.clientHeight;
+		// 		const newSize = width + (moveR ? (g_clientX - clientX) : (clientX - g_clientX));
+		// 		edit.style.width = newSize + "px";
+		// 		edit.style.height = height + "px";
+		// 	}
+		// }
 
 		editRight.addEventListener("mousedown", e => {
-			// clientX = e.clientX;
-			// console.log(clientX);
 			moveX = true;
-			moveR = true;
+			valX = e.clientX;
 		});
 
 		editRight.addEventListener("mousemove", e => {
-			clientX = e.clientX;
 			if (moveX) {
-				console.log(g_clientX)
-				const width = edit.clientWidth;
-				const height = edit.clientHeight;
-				const newSize = width + (moveR ? (g_clientX - clientX) : (clientX - g_clientX));
-				edit.style.width = newSize + "px";
-				edit.style.height = height + "px";
-			}
-			console.log(e);
+				if (valX < e.clientX)
+					edit.style.width = edit.clientWidth + 1 + "px";
+				else if (valX > e.clientX)
+					edit.style.width = edit.clientWidth - 1 + "px";
+					valX = e.clientX;
+				}
 		});
 
 		editRight.addEventListener("mouseup", e => {
-			clientX = e.clientX;
-			moveX = false;
-			moveR = false;
-		});
-
-		editRight.addEventListener("mouseout", e => {
 			moveX = false;
 		});
 
-		editLeft.addEventListener("mousedown", e => {
-			clientX = e.clientX;
-			moveX = true;
-			moveL = true;
-		});
+		// editRight.addEventListener("mouseout", e => {
+		// 	moveX = false;
+		// });
 
-		editLeft.addEventListener("mouseup", e => {
-			clientX = e.clientX;
-			moveX = false;
-			moveL = false;
-		});
+		// editLeft.addEventListener("mousedown", e => {
+		// 	clientX = e.clientX;
+		// 	moveX = true;
+		// 	moveL = true;
+		// });
 
-		editLeft.addEventListener("mouseout", e => {
-			moveX = false;
-		});
+		// editLeft.addEventListener("mouseup", e => {
+		// 	clientX = e.clientX;
+		// 	moveX = false;
+		// 	moveL = false;
+		// });
 
-		window.addEventListener('mousemove', mousemove);
+		// editLeft.addEventListener("mouseout", e => {
+		// 	moveX = false;
+		// });
+
+		// window.addEventListener('mousemove', mousemove);
 
 	</script>
 
