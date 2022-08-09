@@ -35,34 +35,7 @@
 	<title>Create your picture</title>
 	<link href="/css/style.css" rel="stylesheet" type="text/css">
 	<link href="/css/filter.css" rel="stylesheet" type="text/css">
-
-	<style>
-		.video {
-			position: relative;
-		}
-
-		video {
-			border-radius: 15px;
-		}
-
-		.video .captured {
-			--size-btn-captured: 50px;
-			position: absolute;
-			height: var(--size-btn-captured);
-			width: var(--size-btn-captured);
-			background-color: transparent;
-			border-radius: 50%;
-			bottom: calc(var(--size-btn-captured) / 2);
-			left: calc(50% - calc(var(--size-btn-captured) / 2));
-			border: 2px solid red;
-		}
-
-		.video .captured:hover {
-			background-color: red;
-			cursor: pointer;
-		}
-
-	</style>
+	<link href="/css/webcam.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 
