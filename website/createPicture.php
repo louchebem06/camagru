@@ -75,63 +75,18 @@
 
 </body>
 	<script>
-
+		
+		// https://medium.com/the-z/making-a-resizable-div-in-js-is-not-easy-as-you-think-bda19a1bc53d
+		
 		const edit = document.getElementById("edit");
 		const editRight = document.getElementById("right");
-		var moveX = false;
-		var valX;
 
-		// function mousemove(event){
-		// 	let g_clientX = event.clientX;
-		// 	if (moveX) {
-		// 		const width = edit.clientWidth;
-		// 		const height = edit.clientHeight;
-		// 		const newSize = width + (moveR ? (g_clientX - clientX) : (clientX - g_clientX));
-		// 		edit.style.width = newSize + "px";
-		// 		edit.style.height = height + "px";
-		// 	}
-		// }
-
-		editRight.addEventListener("mousedown", e => {
-			moveX = true;
-			valX = e.clientX;
-		});
-
-		editRight.addEventListener("mousemove", e => {
-			if (moveX) {
-				if (valX < e.clientX)
-					edit.style.width = edit.clientWidth + 1 + "px";
-				else if (valX > e.clientX)
-					edit.style.width = edit.clientWidth - 1 + "px";
-					valX = e.clientX;
-				}
-		});
-
-		editRight.addEventListener("mouseup", e => {
-			moveX = false;
-		});
-
-		// editRight.addEventListener("mouseout", e => {
-		// 	moveX = false;
-		// });
-
-		// editLeft.addEventListener("mousedown", e => {
-		// 	clientX = e.clientX;
-		// 	moveX = true;
-		// 	moveL = true;
-		// });
-
-		// editLeft.addEventListener("mouseup", e => {
-		// 	clientX = e.clientX;
-		// 	moveX = false;
-		// 	moveL = false;
-		// });
-
-		// editLeft.addEventListener("mouseout", e => {
-		// 	moveX = false;
-		// });
-
-		// window.addEventListener('mousemove', mousemove);
+		edit.addEventListener('mousedown', function(e) {
+			edit.addEventListener('mousemove', e => {
+				edit.style.width = e.pageX - edit.getBoundingClientRect().left + 'px';
+				edit.style.height = height;
+			})
+		})
 
 	</script>
 
