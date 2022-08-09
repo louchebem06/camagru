@@ -35,6 +35,34 @@
 	<title>Create your picture</title>
 	<link href="/css/style.css" rel="stylesheet" type="text/css">
 	<link href="/css/filter.css" rel="stylesheet" type="text/css">
+
+	<style>
+		.video {
+			position: relative;
+		}
+
+		video {
+			border-radius: 15px;
+		}
+
+		.video .captured {
+			--size-btn-captured: 50px;
+			position: absolute;
+			height: var(--size-btn-captured);
+			width: var(--size-btn-captured);
+			background-color: transparent;
+			border-radius: 50%;
+			bottom: calc(var(--size-btn-captured) / 2);
+			left: calc(50% - calc(var(--size-btn-captured) / 2));
+			border: 2px solid red;
+		}
+
+		.video .captured:hover {
+			background-color: red;
+			cursor: pointer;
+		}
+
+	</style>
 </head>
 <body>
 
@@ -65,7 +93,10 @@
 			</div>
 		</div>
 		<div class="box">
-			<video id="video">Video stream not available.</video>
+			<div class="video" id="div-video">
+				<video id="video">Video stream not available.</video>
+				<div class="captured" id="captured"></div>
+			</div>
 			<canvas id="canvas"></canvas>
 		</div>
 		
@@ -94,6 +125,8 @@
 		
 		let filters = document.getElementById('filter');
 		let video = document.getElementById('video');
+		let div_video = document.getElementById('div-video');
+		let btn_captured = document.getElementById('captured');
 		let canvas = document.getElementById('canvas');
 
 		filters.style.display = "none";
@@ -129,17 +162,17 @@
 		}
 
 		function disabledWebcam() {
-			/* TODO DISABLED WEBCAM */
+			camera = video.srcObject.getTracks()[0];
+			camera.stop();
 		}
 
 		activateWebcam();
 
-		video.addEventListener("click", () => {
+		btn_captured.addEventListener("click", () => {
 			takepicture();
-			video.style.display = "none";
+			div_video.style.display = "none";
 			canvas.style.display = "block";
 			filters.style.display = "block";
-			addFilter();
 			disabledWebcam();
 		})
 
@@ -157,7 +190,7 @@
 		document.addEventListener("keydown", e => {
 			if (e.key == "Escape") {
 				activateWebcam();
-				video.style.display = "block";
+				div_video.style.display = "block";
 				canvas.style.display = "none";
 				filters.style.display = "none";
 			}
