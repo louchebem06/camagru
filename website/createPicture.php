@@ -52,25 +52,26 @@
 				}
 			?>
 		</div>
-		<div class="box">
-			<div class="filter-edit nonSelectionnable" id="edit">
-				<div class="block nw"></div>
-				<div class="block n"></div>
-				<div class="block ne"></div>
-				<div class="block w"></div>
-				<div class="block e" id="right"></div>
-				<div class="block sw"></div>
-				<div class="block s"></div>
-				<div class="block se"></div>
-				<img draggable="false" src="/img/filter/chapeau0.png" />
-			</div>
-		</div>
+
 		<div class="box">
 			<div class="video" id="div-video">
 				<video id="video">Video stream not available.</video>
 				<div class="captured" id="captured"></div>
 			</div>
-			<canvas id="canvas"></canvas>
+			<div class="canvas">
+				<canvas id="canvas"></canvas>
+				<div class="filter-edit nonSelectionnable" id="edit">
+					<div class="block nw"></div>
+					<div class="block n"></div>
+					<div class="block ne"></div>
+					<div class="block w"></div>
+					<div class="block e" id="right"></div>
+					<div class="block sw"></div>
+					<div class="block s" id="bottom"></div>
+					<div class="block se" id="bottom-right"></div>
+					<img id="src-edit" draggable="false" />
+				</div>
+			</div>
 		</div>
 		
 	</div>
@@ -79,28 +80,54 @@
 
 </body>
 	<script>
-		
-		// https://medium.com/the-z/making-a-resizable-div-in-js-is-not-easy-as-you-think-bda19a1bc53d
-		
+
 		const edit = document.getElementById("edit");
 		const editRight = document.getElementById("right");
+		const editBottom = document.getElementById("bottom");
+		const editBottomRight = document.getElementById("bottom-right");
 
-		edit.addEventListener('mousedown', function(e) {
-			edit.addEventListener('mousemove', e => {
+		editRight.addEventListener('mousedown', function(e) {
+			let cb = e => {
 				edit.style.width = e.pageX - edit.getBoundingClientRect().left + 'px';
-				edit.style.height = height;
-			})
+				edit.style.height = edit.clientHeight + "px";
+			}
+			window.addEventListener('mousemove', cb);
+			window.addEventListener('mouseup', () => window.removeEventListener('mousemove', cb), { once: true });
 		})
 
-	</script>
+		editBottom.addEventListener('mousedown', function(e) {
+			let cb = e => {
+				edit.style.height = e.pageY - edit.getBoundingClientRect().top + 'px';
+				edit.style.width = edit.clientWidth + "px";
+			}
+			window.addEventListener('mousemove', cb);
+			window.addEventListener('mouseup', () => window.removeEventListener('mousemove', cb), { once: true });
+		})
 
-	<script>
+		editBottomRight.addEventListener('mousedown', function(e) {
+			let cb = e => {
+				edit.style.width = e.pageX - edit.getBoundingClientRect().left + 'px';
+				edit.style.height = e.pageY - edit.getBoundingClientRect().top + 'px';;
+			}
+			window.addEventListener('mousemove', cb);
+			window.addEventListener('mouseup', () => window.removeEventListener('mousemove', cb), { once: true });
+		})
+
+		edit.addEventListener('mousedown', function(e) {
+			let cb = e => {
+				edit.style.top = "10px";
+				edit.style.left = "10px";
+			}
+			window.addEventListener('mousemove', cb);
+			window.addEventListener('mouseup', () => window.removeEventListener('mousemove', cb), { once: true });
+		})
 		
 		let filters = document.getElementById('filter');
 		let video = document.getElementById('video');
 		let div_video = document.getElementById('div-video');
 		let btn_captured = document.getElementById('captured');
 		let canvas = document.getElementById('canvas');
+		let src_edit = document.getElementById('src-edit');
 
 		filters.style.display = "none";
 
@@ -156,7 +183,11 @@
 		
 		for (let i = 0; i < 9; i++) {
 			filter[i].addEventListener("click", e => {
-				writeElement(filter[i], 10, 10, 150, 150);
+				// writeElement(filter[i], 10, 10, 150, 150);
+				src_edit.src = filter[i].src;
+				edit.style.display = "block";
+				edit.style.top = 0;
+				edit.style.left = 0;
 			});
 		}
 
