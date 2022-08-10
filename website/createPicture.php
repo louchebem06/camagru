@@ -58,7 +58,7 @@
 				<video id="video">Video stream not available.</video>
 				<div class="captured" id="captured"></div>
 			</div>
-			<div class="canvas">
+			<div class="canvas" id="div_canvas">
 				<canvas id="canvas"></canvas>
 				<div class="filter-edit nonSelectionnable" id="edit">
 					<div class="block nw"></div>
@@ -70,6 +70,8 @@
 					<div class="block s" id="bottom"></div>
 					<div class="block se" id="bottom-right"></div>
 					<img id="src-edit" draggable="false" />
+					<button onclick="disabledFilter()">Remove</button>
+					<button onclick="applyFilter()">Valider</button>
 				</div>
 			</div>
 		</div>
@@ -85,6 +87,7 @@
 		const editRight = document.getElementById("right");
 		const editBottom = document.getElementById("bottom");
 		const editBottomRight = document.getElementById("bottom-right");
+		const div_canvas = document.getElementById('div_canvas');
 
 		editRight.addEventListener('mousedown', function(e) {
 			let cb = e => {
@@ -115,11 +118,11 @@
 
 		edit.addEventListener('mousedown', function(e) {
 			let cb = e => {
-				edit.style.top = "10px";
-				edit.style.left = "10px";
+				edit.style.top = e.y - edit.clientWidth - 350 + 'px';
+    			edit.style.left = e.x - edit.clientHeight - (edit.clientHeight / 2) + 'px';
 			}
-			window.addEventListener('mousemove', cb);
-			window.addEventListener('mouseup', () => window.removeEventListener('mousemove', cb), { once: true });
+			div_canvas.addEventListener('mousemove', cb);
+			window.addEventListener('mouseup', () => div_canvas.removeEventListener('mousemove', cb), { once: true });
 		})
 		
 		let filters = document.getElementById('filter');
@@ -183,7 +186,6 @@
 		
 		for (let i = 0; i < 9; i++) {
 			filter[i].addEventListener("click", e => {
-				// writeElement(filter[i], 10, 10, 150, 150);
 				src_edit.src = filter[i].src;
 				edit.style.display = "block";
 				edit.style.top = 0;
@@ -199,6 +201,19 @@
 				filters.style.display = "none";
 			}
 		});
+
+		function disabledFilter() {
+			edit.style.display = "none";
+		}
+
+		function applyFilter() {
+			const width = src_edit.clientWidth;
+			const height = src_edit.clientHeight;
+			const y = parseInt(edit.style.top);
+			const x = parseInt(edit.style.left);
+			writeElement(src_edit, x + 20, y + 20, width, height);
+			// disabledFilter()
+		}
 
 	</script>
 </html>
