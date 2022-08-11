@@ -159,6 +159,7 @@ footer p, footer .lien a {
 
 footer {
 	width: 350px;
+	margin-left: 10px;
 }
 
 footer .title {
