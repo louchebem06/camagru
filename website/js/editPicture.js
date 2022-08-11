@@ -20,8 +20,6 @@ function takepicture() {
 	edit.width = canvas.width = video.videoWidth;
 	edit.height = canvas.height = video.videoHeight;
 	context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-	const data = canvas.toDataURL('image/png');
 }
 
 function writeElement(filter, x, y, sizeX, sizeY) {
@@ -68,6 +66,11 @@ function applyFilter() {
 	console.log(canvas_info, picture_info);
 	writeElement(src_edit, x, y, width, height);
 	// disabledFilter()
+}
+
+function getPicture() {
+	const data = canvas.toDataURL('image/png');
+	return (data);
 }
 
 // Default
