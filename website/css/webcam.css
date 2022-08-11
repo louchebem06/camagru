@@ -22,3 +22,7 @@ video {
 	background-color: red;
 	cursor: pointer;
 }
+
+.captured {
+	display: none;
+}

@@ -36,6 +36,7 @@
 	<link href="/css/style.css" rel="stylesheet" type="text/css">
 	<link href="/css/filter.css" rel="stylesheet" type="text/css">
 	<link href="/css/webcam.css" rel="stylesheet" type="text/css">
+	<link href="/css/loading.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 
@@ -55,7 +56,8 @@
 
 		<div class="box">
 			<div class="video" id="div-video">
-				<video id="video">Video stream not available.</video>
+				<video id="video"></video>
+				<div class="lds-ripple" id="loading"><div></div><div></div></div>
 				<div class="captured" id="captured"></div>
 			</div>
 			<div class="canvas" id="div_canvas">
@@ -81,139 +83,5 @@
 	<?php include($_SERVER['DOCUMENT_ROOT'] . "/footer.php") ?>
 
 </body>
-	<script>
-
-		const edit = document.getElementById("edit");
-		const editRight = document.getElementById("right");
-		const editBottom = document.getElementById("bottom");
-		const editBottomRight = document.getElementById("bottom-right");
-		const div_canvas = document.getElementById('div_canvas');
-
-		editRight.addEventListener('mousedown', function(e) {
-			let cb = e => {
-				edit.style.width = e.pageX - edit.getBoundingClientRect().left + 'px';
-				edit.style.height = edit.clientHeight + "px";
-			}
-			window.addEventListener('mousemove', cb);
-			window.addEventListener('mouseup', () => window.removeEventListener('mousemove', cb), { once: true });
-		})
-
-		editBottom.addEventListener('mousedown', function(e) {
-			let cb = e => {
-				edit.style.height = e.pageY - edit.getBoundingClientRect().top + 'px';
-				edit.style.width = edit.clientWidth + "px";
-			}
-			window.addEventListener('mousemove', cb);
-			window.addEventListener('mouseup', () => window.removeEventListener('mousemove', cb), { once: true });
-		})
-
-		editBottomRight.addEventListener('mousedown', function(e) {
-			let cb = e => {
-				edit.style.width = e.pageX - edit.getBoundingClientRect().left + 'px';
-				edit.style.height = e.pageY - edit.getBoundingClientRect().top + 'px';;
-			}
-			window.addEventListener('mousemove', cb);
-			window.addEventListener('mouseup', () => window.removeEventListener('mousemove', cb), { once: true });
-		})
-
-		edit.addEventListener('mousedown', function(e) {
-			let cb = e => {
-				edit.style.top = e.y - edit.clientWidth - 350 + 'px';
-    			edit.style.left = e.x - edit.clientHeight - (edit.clientHeight / 2) + 'px';
-			}
-			div_canvas.addEventListener('mousemove', cb);
-			window.addEventListener('mouseup', () => div_canvas.removeEventListener('mousemove', cb), { once: true });
-		})
-		
-		let filters = document.getElementById('filter');
-		let video = document.getElementById('video');
-		let div_video = document.getElementById('div-video');
-		let btn_captured = document.getElementById('captured');
-		let canvas = document.getElementById('canvas');
-		let src_edit = document.getElementById('src-edit');
-
-		filters.style.display = "none";
-
-		function takepicture() {
-			const context = canvas.getContext('2d');
-			canvas.width = video.videoWidth;
-			canvas.height = video.videoHeight;
-			context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-			const data = canvas.toDataURL('image/png');
-		}
-
-		function writeElement(filter, x, y, sizeX, sizeY) {
-			const context = canvas.getContext('2d');
-			context.drawImage(filter, x, y, sizeX, sizeY);
-		}
-
-		function activateWebcam() {
-			if (navigator.mediaDevices.getUserMedia) {
-				navigator.mediaDevices.getUserMedia({
-					video: true,
-					audio: false
-				})
-				.then(function(stream) {
-					video.srcObject = stream;
-					video.play();
-				})
-				.catch((err) => {
-					console.error(`An error occurred: ${err}`);
-				});
-			}
-		}
-
-		function disabledWebcam() {
-			camera = video.srcObject.getTracks()[0];
-			camera.stop();
-		}
-
-		activateWebcam();
-
-		btn_captured.addEventListener("click", () => {
-			takepicture();
-			div_video.style.display = "none";
-			canvas.style.display = "block";
-			filters.style.display = "block";
-			disabledWebcam();
-		})
-
-		let filter = [];
-		for (let i = 0; i < 9; i++) {
-			filter.push(document.getElementById("filter-" + i))
-		}
-		
-		for (let i = 0; i < 9; i++) {
-			filter[i].addEventListener("click", e => {
-				src_edit.src = filter[i].src;
-				edit.style.display = "block";
-				edit.style.top = 0;
-				edit.style.left = 0;
-			});
-		}
-
-		document.addEventListener("keydown", e => {
-			if (e.key == "Escape") {
-				activateWebcam();
-				div_video.style.display = "block";
-				canvas.style.display = "none";
-				filters.style.display = "none";
-			}
-		});
-
-		function disabledFilter() {
-			edit.style.display = "none";
-		}
-
-		function applyFilter() {
-			const width = src_edit.clientWidth;
-			const height = src_edit.clientHeight;
-			const y = parseInt(edit.style.top);
-			const x = parseInt(edit.style.left);
-			writeElement(src_edit, x + 20, y + 20, width, height);
-			// disabledFilter()
-		}
-
-	</script>
+	<script src="/js/editPicture.js"></script>
 </html>
