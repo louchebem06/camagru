@@ -15,6 +15,7 @@ const loading = document.getElementById('loading');
 const divErrorCamara = document.getElementById('cameraError');
 const toggle = document.getElementById("toggle");
 const img_input = document.getElementById("img_input");
+const btn_save = document.getElementById('btn_save');
 
 // Function
 
@@ -24,6 +25,7 @@ function takepicture() {
 	edit.width = canvas.width = 600;
 	edit.height = canvas.height = video.videoHeight / ratio;
 	context.drawImage(video, 0, 0, canvas.width, canvas.height);
+	btn_save.style.display = "block";
 }
 
 function inputPicture(img) {
@@ -35,6 +37,7 @@ function inputPicture(img) {
 			edit.height = canvas.height = imageBitmap.height / ratio;
 			context.drawImage(imageBitmap, 0, 0, canvas.width, canvas.height);
 		});
+	btn_save.style.display = "block";
 }
 
 function writeElement(filter, x, y, sizeX, sizeY) {
@@ -102,6 +105,7 @@ function getPicture() {
 function modeEdit(toggleState) {
 	const msg = document.getElementById("messageMode");
 	disabledFilter();
+	btn_save.style.display = "none";
 	if (!toggleState) {
 		msg.innerHTML = "Webcam Mode";
 		img_input.style.display = "none";
@@ -115,11 +119,35 @@ function modeEdit(toggleState) {
 	}
 }
 
+function save() {
+	const picture = getPicture();
+	const url = "/scripts/base64ToImg.php";
+
+	let data = new URLSearchParams();
+	data.append(`data`, `${picture}`);
+
+	let result = fetch(url, {method:'post', body: data})
+		.then((response) => response.json())
+		.then((responseData) => {
+			return responseData;
+		})
+		.catch(error => console.warn(error));
+		
+	result.then(async function(response) {
+		if (response.msg == "ok") {
+			document.location.href="/profil.php"; 
+		} else {
+			console.log("It should never have happened, please retry btn");
+		}
+	});
+}
+
 // Default
 
 filters.style.display = "none";
 img_input.style.display = "none";
 divErrorCamara.style.display = "none";
+btn_save.style.display = "none";
 activateWebcam();
 
 let filter = [];
@@ -193,6 +221,7 @@ document.addEventListener("keydown", e => {
 		div_video.style.display = "block";
 		canvas.style.display = "none";
 		filters.style.display = "none";
+		btn_save.style.display = "none";
 	}
 	else if (e.key == "Escape" && toggle.checked) {
 		img_input.style.display = "block";
@@ -200,10 +229,13 @@ document.addEventListener("keydown", e => {
 		canvas.style.display = "none";
 		filters.style.display = "none";
 		disabledFilter();
+		btn_save.style.display = "none";
 	}
 	else if (e.key == "m" || e.key == "M") {
 		toggle.checked = !toggle.checked;
 		img_input.value = null;
+		canvas.style.display = "none";
+		filters.style.display = "none";
 		modeEdit(toggle.checked);
 	}
 });

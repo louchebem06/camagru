@@ -1,16 +1,19 @@
 <?php
-	// session_start();
+	session_start();
 
-	// require($_SERVER['DOCUMENT_ROOT'] . "/functions/validUser.php");
+	require($_SERVER['DOCUMENT_ROOT'] . "/functions/validUser.php");
 
-	// if (isset($_SESSION['id']) && !empty($_SESSION['id'])) {
-	// 	if (!validUser($_SESSION['id'])) {
-	// 		header("Location: /scripts/disconnect.php");
-	// 		exit();
-	// 	}
-	// }
+	if (isset($_SESSION['id']) && !empty($_SESSION['id'])) {
+		if (!validUser($_SESSION['id'])) {
+			header("Location: /scripts/disconnect.php");
+			exit();
+		}
+	}
 
-	// require($_SERVER['DOCUMENT_ROOT'] . "/functions/getUsername.php");
+	if (!isset($_SESSION['id'])) {
+		header("Location: /");
+		exit();
+	}
 
 	$dirFilter = "/img/filter/";
 	$filter = [
@@ -45,7 +48,7 @@
 	
 	<div class="website">
 
-		<div class="box tips">
+		<div class="box">
 			<h2>Help</h2>
 			<p>Press `Escape/Echap` for reset</p>
 			<p>Press `M/m` for change mode</p>
@@ -97,6 +100,10 @@
 					<button onclick="applyFilter()">Valider</button>
 				</div>
 			</div>
+		</div>
+
+		<div class="box" id="btn_save">
+			<button onclick="save()">Sauvegarder</button>
 		</div>
 		
 	</div>

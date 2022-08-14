@@ -17,6 +17,7 @@ header {
 	width: 100%;
 	height: 60px;
 	border-bottom: 1px solid var(--borderColor);
+	z-index: 1000;
 }
 
 header .content h1 { font-family: 'Pacifico', cursive; }
