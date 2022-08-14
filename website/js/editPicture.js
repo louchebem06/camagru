@@ -12,42 +12,69 @@ const btn_captured = document.getElementById('captured');
 const canvas = document.getElementById('canvas');
 const src_edit = document.getElementById('src-edit');
 const loading = document.getElementById('loading');
+const divErrorCamara = document.getElementById('cameraError');
+const toggle = document.getElementById("toggle");
+const img_input = document.getElementById("img_input");
 
 // Function
 
 function takepicture() {
 	const context = canvas.getContext('2d');
-	edit.width = canvas.width = video.videoWidth;
-	edit.height = canvas.height = video.videoHeight;
+	const ratio = video.videoWidth / 600;
+	edit.width = canvas.width = 600;
+	edit.height = canvas.height = video.videoHeight / ratio;
 	context.drawImage(video, 0, 0, canvas.width, canvas.height);
+}
+
+function inputPicture(img) {
+	const context = canvas.getContext('2d');
+	createImageBitmap(img)
+		.then(imageBitmap => {
+			const ratio = imageBitmap.width / 600;
+			edit.width = canvas.width = 600;
+			edit.height = canvas.height = imageBitmap.height / ratio;
+			context.drawImage(imageBitmap, 0, 0, canvas.width, canvas.height);
+		});
 }
 
 function writeElement(filter, x, y, sizeX, sizeY) {
 	const context = canvas.getContext('2d');
-	context.drawImage(filter, x + 3, y + 3, sizeX, sizeY);
+	context.drawImage(filter, x, y, sizeX, sizeY);
 }
 
 function activateWebcam() {
+	div_video.style.display = "block";
 	if (navigator.mediaDevices.getUserMedia) {
 		navigator.mediaDevices.getUserMedia({
 			video: true,
 			audio: false
 		})
 		.then(function(stream) {
+			divErrorCamara.style.display = "none";
 			video.srcObject = stream;
 			video.play();
 			loading.style.display = "none";
 			btn_captured.style.display = "block";
 		})
 		.catch((err) => {
-			console.error(`An error occurred: ${err}`);
+			divErrorCamara.style.display = "block";
+			const codeErrorP = document.getElementById('codeCameraError');
+			const messageErrorP = document.getElementById('messageCameraError');
+
+			codeErrorP.innerHTML  = "Code: " + err.code;
+			messageErrorP.innerHTML  = "Message: " + err.message;
 		});
 	}
 }
 
 function disabledWebcam() {
-	camera = video.srcObject.getTracks()[0];
-	camera.stop();
+	try {
+		camera = video.srcObject.getTracks()[0];
+		camera.stop();
+		div_video.style.display = "none";
+	} catch (e) {
+		div_video.style.display = "none";
+	}
 }
 
 function disabledFilter() {
@@ -63,9 +90,8 @@ function applyFilter() {
 	const picture_info = src_edit.getBoundingClientRect();
 	const y = picture_info.top - canvas_info.top;
 	const x = picture_info.left - canvas_info.left;
-	console.log(canvas_info, picture_info);
 	writeElement(src_edit, x, y, width, height);
-	// disabledFilter()
+	disabledFilter()
 }
 
 function getPicture() {
@@ -73,10 +99,27 @@ function getPicture() {
 	return (data);
 }
 
+function modeEdit(toggleState) {
+	const msg = document.getElementById("messageMode");
+	disabledFilter();
+	if (!toggleState) {
+		msg.innerHTML = "Webcam Mode";
+		img_input.style.display = "none";
+		canvas.style.display = "none";
+		filters.style.display = "none";
+		activateWebcam();
+	} else {
+		msg.innerHTML = "Upload Mode";
+		img_input.style.display = "block";
+		disabledWebcam();
+	}
+}
+
 // Default
 
 filters.style.display = "none";
-
+img_input.style.display = "none";
+divErrorCamara.style.display = "none";
 activateWebcam();
 
 let filter = [];
@@ -142,7 +185,7 @@ btn_captured.addEventListener("click", () => {
 })
 
 document.addEventListener("keydown", e => {
-	if (e.key == "Escape") {
+	if (e.key == "Escape" && toggle.checked == false) {
 		loading.style.display = "block";
 		btn_captured.style.display = "none";
 		disabledFilter();
@@ -151,4 +194,27 @@ document.addEventListener("keydown", e => {
 		canvas.style.display = "none";
 		filters.style.display = "none";
 	}
+	else if (e.key == "Escape" && toggle.checked) {
+		img_input.style.display = "block";
+		img_input.value = null;
+		canvas.style.display = "none";
+		filters.style.display = "none";
+		disabledFilter();
+	}
+	else if (e.key == "m" || e.key == "M") {
+		toggle.checked = !toggle.checked;
+		img_input.value = null;
+		modeEdit(toggle.checked);
+	}
+});
+
+toggle.addEventListener('change', e=> {
+	modeEdit(toggle.checked);
+})
+
+img_input.addEventListener('change', e => {
+	inputPicture(e.target.files[0]);
+	canvas.style.display = "block";
+	filters.style.display = "block";
+	img_input.style.display = "none";
 });

@@ -37,12 +37,27 @@
 	<link href="/css/filter.css" rel="stylesheet" type="text/css">
 	<link href="/css/webcam.css" rel="stylesheet" type="text/css">
 	<link href="/css/loading.css" rel="stylesheet" type="text/css">
+	<link href="/css/toggle.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 
 	<?php include($_SERVER['DOCUMENT_ROOT'] . "/header.php") ?>
 	
 	<div class="website">
+
+		<div class="box tips">
+			<h2>Help</h2>
+			<p>Press `Escape/Echap` for reset</p>
+			<p>Press `M/m` for change mode</p>
+		</div>
+
+		<div class="box toggleWebcam">
+			<label class="switch">
+				<input type="checkbox" id="toggle">
+				<span class="slider round"></span>
+			</label>
+			<p id="messageMode">Webcam Mode</p>
+		</div>
 
 		<div class="box filter-elements" id="filter">
 			<?php
@@ -55,10 +70,16 @@
 		</div>
 
 		<div class="box">
+			<input type="file" accept="image/*" id="img_input"/>
 			<div class="video" id="div-video">
 				<video id="video"></video>
 				<div class="lds-ripple" id="loading"><div></div><div></div></div>
 				<div class="captured" id="captured"></div>
+				<div id="cameraError">
+					<img src="/img/webcamoff.svg" alt="Logo Camera Error" />
+					<p id="codeCameraError"></p>
+					<p id="messageCameraError"></p>
+				</div>
 			</div>
 			<div class="canvas" id="div_canvas">
 				<canvas id="canvas"></canvas>

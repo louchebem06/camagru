@@ -26,3 +26,17 @@ video {
 .captured {
 	display: none;
 }
+
+#cameraError {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+#cameraError img{
+	display: block;
+	width: 150px;
+	height: auto;
+	margin: auto;
+}
