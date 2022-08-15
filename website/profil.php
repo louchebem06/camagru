@@ -24,6 +24,25 @@
 
 	$username = getUsername($id);
 	$profilPicture = getPicture($id);
+
+	require($_SERVER['DOCUMENT_ROOT'] . "/utilitys/connect.php");
+
+	$img_limit = 6;
+	$page = 0;
+	if (isset($_GET['page']) && !empty($_GET['page']))
+		$page = $_GET['page'] - 1;
+	
+	$offset = $img_limit * $page;
+
+	$sql = "SELECT * FROM `img` WHERE `user_id` = '${id}' ORDER BY `img_id` DESC LIMIT ${img_limit} OFFSET ${offset}";
+	$state = $conn->query($sql);
+	$imgTab = $state->fetchAll(PDO::FETCH_ASSOC);
+
+	$sql = "SELECT COUNT(img_id) FROM `img` WHERE `user_id` = '${id}'";
+	$state = $conn->query($sql);
+	$nb_img = $state->fetch(PDO::FETCH_ASSOC);
+	$nb_img = $nb_img["COUNT(img_id)"];
+	$max_page = ceil($nb_img / $img_limit);
 ?>
 
 <!DOCTYPE html>
@@ -35,6 +54,7 @@
 	<title>Profil</title>
 	<link href="/css/style.css" rel="stylesheet" type="text/css">
 	<link href="/css/profil.css" rel="stylesheet" type="text/css">
+	<link href="/css/photo.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 
@@ -55,6 +75,54 @@
 			<p><?php echo $username ?></p>
 			<?php if ($id == $_SESSION['id']) ?>
 				<a href="editProfil.php"><b>Edition</b></a>
+		</div>
+
+		<div class="box">
+			<div class="photoBox">
+			<?php
+				foreach ($imgTab as $key => $imgInfo) {
+					$img_id = $imgInfo['img_id'];
+					$user_id = $imgInfo['user_id'];
+					$img_file = $imgInfo['file'];
+					?>
+						<div class="imgContent">
+							<img src="<?php echo $img_file ?>" alt="picture"/>
+						</div>
+					<?php
+				}
+			?>
+			</div>
+		</div>
+
+		<div class="box pagination">
+			<?php
+				$range_page = 4;
+				$start = ($page - $range_page < 0) ? 0 : $page - $range_page;
+				$limit = ($page + $range_page < $max_page) ? $page +  $range_page : $max_page;
+				if ($start != 0) {
+					?> <p>...</p> <?php
+				}
+				for ($i = $start; $i < $limit; $i++)
+				{
+					$params = $_GET;
+					$params['page'] = $i + 1;
+					$paramString = http_build_query($params);
+					?>
+						<a href="<?php echo '/profil.php?' . $paramString ?> ">
+						<?php
+							if ($i == $page) {
+								?> <b><?php echo $i + 1 ?></b> <?php
+							} else {
+								?> <p><?php echo $i + 1 ?></p> <?php
+							}
+						?>
+						</a>
+					<?php
+				}
+				if ($limit < $max_page) {
+					?> <p>...</p> <?php
+				}
+			?>
 		</div>
 		
 		<?php if ($id == $_SESSION['id']) { ?>

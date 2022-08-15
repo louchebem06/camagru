@@ -1,0 +1,30 @@
+.photoBox {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 10px;
+}
+
+.imgContent img {
+	display: block;
+	width: 100%;
+}
+
+.pagination {
+	display: flex;
+	flex: row;
+	justify-content: space-around;
+	align-items: center;
+}
+
+.pagination a {
+	text-decoration: none;
+	color: black;
+}
+
+.pagination a p {
+	font-size: 14px;
+}
+
+.pagination a b {
+	font-size: 16px;
+}
