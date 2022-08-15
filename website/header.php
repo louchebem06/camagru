@@ -13,8 +13,15 @@
 				if (isset($_SESSION['id'])) {
 					require_once($_SERVER['DOCUMENT_ROOT'] . "/functions/getPicture.php");
 			?>
+				<a href="/createPicture.php">
+					<img alt="logo add picture" src="/img/add.svg" />
+				</a>
 				<a href="/profil.php">
 					<img class="userImg" alt="picture profile" src="<?php echo getPicture() ?>" />
+				</a>
+
+				<a href="/scripts/disconnect.php">
+					<img src="/img/logout.svg" />
 				</a>
 			<?php } else { ?>
 			<a href="/registration.php">

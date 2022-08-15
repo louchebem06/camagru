@@ -4,19 +4,17 @@
 	require($_SERVER['DOCUMENT_ROOT'] . "/functions/validUser.php");
 
 	if (isset($_SESSION['id']) && !empty($_SESSION['id'])) {
+		$id = $_SESSION['id'];
 		if (!validUser($_SESSION['id'])) {
 			header("Location: /scripts/disconnect.php");
 			exit();
 		}
-	} else {
-		header("Location: /login.php");
-		exit();
 	}
 
 	require($_SERVER['DOCUMENT_ROOT'] . "/functions/getUsername.php");
 	require($_SERVER['DOCUMENT_ROOT'] . "/functions/getPicture.php");
 
-	$id = $_SESSION['id'];
+
 	if (isset($_GET['id']) && !empty($_GET['id']) && validUser($_GET['id']))
 		$id = $_GET['id'];
 	else if (isset($_GET['id']) && $id != $_GET['id'])
@@ -73,8 +71,9 @@
 		<div class="box profil">
 			<img alt="picture-profil" src="<?php echo $profilPicture ?>"/>
 			<p><?php echo $username ?></p>
-			<?php if ($id == $_SESSION['id']) ?>
+			<?php if (isset($_SESSION['id']) && $id == $_SESSION['id']) { ?>
 				<a href="editProfil.php"><b>Edition</b></a>
+			<?php } ?>
 		</div>
 
 		<div class="box">
@@ -125,7 +124,7 @@
 			?>
 		</div>
 		
-		<?php if ($id == $_SESSION['id']) { ?>
+		<?php if (isset($_SESSION['id']) && $id == $_SESSION['id']) { ?>
 			<div class="box">
 				<a class="disconnect-btn" href="/scripts/disconnect.php">Disconnect</a>
 			</div>

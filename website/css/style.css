@@ -35,6 +35,7 @@ header .content {
 header .content .icons {
 	display: flex;
 	flex-direction: row;
+	align-items: center;
 }
 
 header .content .icons a {
@@ -165,8 +166,9 @@ footer {
 
 footer .title {
 	display: flex;
+	flex-direction: column;
 	justify-content: space-between;
-	align-items: flex-end;
+	align-items: flex-start;
 }
 
 footer .title h2 {
@@ -205,4 +207,24 @@ footer .lien {
 		max-width: 600px;
 		width: 100%;
 	}
+}
+
+footer .footer_profil {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	align-items: center;
+	gap: 10px;
+}
+
+footer .footer_profil img {
+	display: block;
+	object-fit: cover;
+	border-radius: 100%;
+	width: 35px;
+	height: 35px;
+}
+
+footer .title h2 {
+	margin-bottom: 10px;
 }

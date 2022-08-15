@@ -38,6 +38,10 @@
 			</div>
 			<input class="submit" type="submit" value="Login"/>
 		</form>
+
+		<div class="box" >
+			<a href="#">Forget password ?</a>
+		</div>
 		
 	</div>
 

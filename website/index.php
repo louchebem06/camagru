@@ -11,6 +11,12 @@
 	}
 
 	require($_SERVER['DOCUMENT_ROOT'] . "/functions/getUsername.php");
+	require($_SERVER['DOCUMENT_ROOT'] . "/functions/getPicture.php");
+	require($_SERVER['DOCUMENT_ROOT'] . "/utilitys/connect.php");
+
+	$sql = "SELECT * FROM `img` ORDER BY `img_id` DESC";
+	$state = $conn->query($sql);
+	$imgTab = $state->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -21,6 +27,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Camagru</title>
 	<link href="/css/style.css" rel="stylesheet" type="text/css">
+	<link href="/css/publication.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 
@@ -28,9 +35,39 @@
 	
 	<div class="website">
 
-		<div class="box">
-			<p>Index page</p>
-		</div>
+		<?php
+			foreach ($imgTab as $key => $value) {
+				$user_id = $value['user_id'];
+				$img_id = $value['img_id'];
+				$file = $value['file'];
+		?>
+			<div class="box publication">
+				<a href="/profil.php?id=<?php echo $user_id ?>" >
+					<div class="user_info_publication">
+						<img src="<?php echo getPicture($user_id) ?>"/>
+						<p><?php echo getUsername($user_id) ?></p>
+					</div>
+				</a>
+				<img src="<?php echo $file ?>"/>
+				<?php
+					if (isset($_SESSION['id'])) { ?>
+					<form>
+						<div class="comment_publication">
+							<img src="/img/comment.svg" />
+							<input type="text" placeholder="Enter your comment" />
+						</div>
+						<div class="submit_publication">
+							<input type="submit" />
+							<a href="#">Look comment</a>
+						</div>
+					</form>
+				<?php } else { ?>
+					<div class="submit_publication">
+							<a href="#">Look comment</a>
+					</div>
+				<?php } ?>
+			</div>
+		<?php } ?>
 		
 	</div>
 
