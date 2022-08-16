@@ -8,9 +8,11 @@
 <footer>
 	<?php
 	if (isset($_SESSION['id']) && !empty($_SESSION['id'])) {
-		$sql = "SELECT * FROM `user` WHERE `user_id` != '{$_SESSION['id']}' ORDER BY `user_id` DESC LIMIT 10";
+
+		$sql = "SELECT * FROM `user` WHERE `user_id` != '{$_SESSION['id']}' AND `activate` = '1' ORDER BY `user_id` DESC LIMIT 10";
 		$state = $conn->query($sql);
 		$users = $state->fetchAll(PDO::FETCH_ASSOC);
+
 		if (validUser($_SESSION['id']) && count($users) >= 1) { 
 			?>
 			<div class="title">

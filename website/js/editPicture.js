@@ -60,6 +60,7 @@ function activateWebcam() {
 			btn_captured.style.display = "block";
 		})
 		.catch((err) => {
+			loading.style.display = "none";
 			divErrorCamara.style.display = "block";
 			const codeErrorP = document.getElementById('codeCameraError');
 			const messageErrorP = document.getElementById('messageCameraError');

@@ -22,10 +22,10 @@ $tableComment = "CREATE TABLE IF NOT EXISTS comment
 		`comment_id`	INT AUTO_INCREMENT PRIMARY KEY,
 		`img_id`		INT NOT NULL,
 		`user_id`		INT NOT NULL,
-		`comment`		VARCHAR(255) NOT NULL UNIQUE
+		`comment`		VARCHAR(255) NOT NULL
 	);";
 
-require_once($_SERVER['DOCUMENT_ROOT'] . "/utilitys/connect.php");
+require($_SERVER['DOCUMENT_ROOT'] . "/utilitys/connect.php");
 
 $conn->exec($tableUser);
 $conn->exec($tableImg);

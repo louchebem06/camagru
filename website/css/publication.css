@@ -56,3 +56,37 @@
 	align-items: center;
 	margin-top: 2px;
 }
+
+.comments_containe {
+	margin: 5px;
+}
+
+.comments_containe div {
+	display: flex;
+	flex-direction: row;
+	gap: 10px;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+.comments_containe div img {
+	display: block;
+	width: 25px;
+	height: 25px;
+	object-fit: cover;
+	border-radius: 100%;
+}
+
+.comments_containe div :last-child {
+	width: 100%;
+}
+
+.comments_containe div {
+	background-color: white;
+	color: black;
+}
+
+.comments_containe div:nth-child(2n) {
+	background-color: black;
+	color: white;
+}
