@@ -16,6 +16,7 @@
 	require($_SERVER['DOCUMENT_ROOT'] . "/functions/getUsername.php");
 	require($_SERVER['DOCUMENT_ROOT'] . "/functions/getMail.php");
 	require($_SERVER['DOCUMENT_ROOT'] . "/functions/getPicture.php");
+	require($_SERVER['DOCUMENT_ROOT'] . "/functions/getNotification.php");
 
 	$username = getUsername();
 	$mail = getMail();
@@ -55,6 +56,7 @@
 				<input class="submit" type="submit" value="Save"/>
 			</form>
 		</div>
+
 		<div class="box formEditProfil">
 			<p>
 				<?php
@@ -70,6 +72,7 @@
 				<input class="submit" type="submit" value="Save"/>
 			</form>
 		</div>
+
 		<div class="box formEditProfil">
 			<p>
 				<?php
@@ -86,6 +89,7 @@
 				<input class="submit" type="submit" value="Save"/>
 			</form>
 		</div>
+
 		<div class="box formEditProfil">
 			<h2>Image</h2>
 			<form method="POST" action="/scripts/updatePicture.php" enctype="multipart/form-data">
@@ -93,6 +97,14 @@
 				<input class="submit" type="submit" value="Save"/>
 			</form>
 			<a href="#">Remove actual picture</a>
+		</div>
+
+		<div class="box formEditProfil">
+			<h2>Notification</h2>
+			<form method="POST" action="/scripts/updateNotification.php">
+				<input type="checkbox" name="notif" <?php if (getNotification()) echo "checked" ?>>
+				<input class="submit" type="submit" value="Save"/>
+			</form>
 		</div>
 
 		<div class="box">
