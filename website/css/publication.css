@@ -58,7 +58,7 @@
 }
 
 .comments_containe {
-	margin: 5px;
+	margin: 5px 0;
 }
 
 .comments_containe div {
@@ -82,11 +82,11 @@
 }
 
 .comments_containe div {
-	background-color: white;
+	background-color: rgb(237, 250, 250);
 	color: black;
 }
 
 .comments_containe div:nth-child(2n) {
-	background-color: black;
-	color: white;
+	background-color: rgb(221, 253, 253);
+	color: black;
 }

@@ -10,6 +10,7 @@ function send(e, form) {
 		.catch(error => console.warn(error));
 
 	result.then(async function(response) {
+		console.log(response);
 		comment.placeholder = response.msg;
 		getComment(id_img);
 	});

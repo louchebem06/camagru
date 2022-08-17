@@ -1,9 +1,6 @@
 // Element
 
 const edit = document.getElementById("edit");
-const editRight = document.getElementById("right");
-const editBottom = document.getElementById("bottom");
-const editBottomRight = document.getElementById("bottom-right");
 const div_canvas = document.getElementById('div_canvas');
 const filters = document.getElementById('filter');
 const video = document.getElementById('video');
@@ -16,8 +13,14 @@ const divErrorCamara = document.getElementById('cameraError');
 const toggle = document.getElementById("toggle");
 const img_input = document.getElementById("img_input");
 const btn_save = document.getElementById('btn_save');
+const cadre_src = document.getElementById('cadre_src');
+const cadre_div = document.getElementById('cadre');
 
 // Function
+function writeElement(filter, x, y, sizeX, sizeY) {
+	const context = canvas.getContext('2d');
+	context.drawImage(filter, x, y, sizeX, sizeY);
+}
 
 function takepicture() {
 	const context = canvas.getContext('2d');
@@ -25,6 +28,7 @@ function takepicture() {
 	edit.width = canvas.width = 600;
 	edit.height = canvas.height = video.videoHeight / ratio;
 	context.drawImage(video, 0, 0, canvas.width, canvas.height);
+	writeElement(cadre_src, 0, 0, canvas.width, canvas.height);
 	btn_save.style.display = "block";
 }
 
@@ -40,14 +44,19 @@ function inputPicture(img) {
 	btn_save.style.display = "block";
 }
 
-function writeElement(filter, x, y, sizeX, sizeY) {
-	const context = canvas.getContext('2d');
-	context.drawImage(filter, x, y, sizeX, sizeY);
-}
-
 function activateWebcam() {
 	div_video.style.display = "block";
-	if (navigator.mediaDevices.getUserMedia) {
+	function error(err) {
+		loading.style.display = "none";
+		divErrorCamara.style.display = "block";
+		const codeErrorP = document.getElementById('codeCameraError');
+		const messageErrorP = document.getElementById('messageCameraError');
+
+		codeErrorP.innerHTML  = "Code: " + err.code;
+		messageErrorP.innerHTML  = "Message: " + err.message;
+	}
+
+	if (navigator.mediaDevices?.getUserMedia) {
 		navigator.mediaDevices.getUserMedia({
 			video: true,
 			audio: false
@@ -57,17 +66,12 @@ function activateWebcam() {
 			video.srcObject = stream;
 			video.play();
 			loading.style.display = "none";
-			btn_captured.style.display = "block";
 		})
 		.catch((err) => {
-			loading.style.display = "none";
-			divErrorCamara.style.display = "block";
-			const codeErrorP = document.getElementById('codeCameraError');
-			const messageErrorP = document.getElementById('messageCameraError');
-
-			codeErrorP.innerHTML  = "Code: " + err.code;
-			messageErrorP.innerHTML  = "Message: " + err.message;
+			error(err);
 		});
+	} else {
+		error({'code': "Jesus", 'message': "Please user localhost for fix error"});
 	}
 }
 
@@ -143,6 +147,14 @@ function save() {
 	});
 }
 
+function upSize() {
+	edit.style.width = src_edit.width + 10 + "px";
+}
+
+function downSize() {
+	edit.style.width = src_edit.width - 10 + "px";
+}
+
 // Default
 
 filters.style.display = "none";
@@ -152,6 +164,7 @@ btn_save.style.display = "none";
 activateWebcam();
 
 let filter = [];
+let cadre = [];
 
 for (let i = 0; i < 9; i++) {
 	filter.push(document.getElementById("filter-" + i));
@@ -165,34 +178,18 @@ for (let i = 0; i < 9; i++) {
 	});
 }
 
+for (let i = 0; i < 4; i++) {
+	cadre.push(document.getElementById("cadre-" + i));
+	cadre[i].addEventListener("click", e => {
+		cadre_src.src = cadre[i].src;
+		cadre_src.style.width = "100%";
+		cadre_src.style.height = "100%";
+		cadre_src.style.borderRadius = "15px";
+		btn_captured.style.display = "block";
+	});
+}
+
 // Event
-
-editRight.addEventListener('mousedown', function(e) {
-	let cb = e => {
-		edit.style.width = e.pageX - edit.getBoundingClientRect().left + 'px';
-		edit.style.height = edit.clientHeight + "px";
-	}
-	window.addEventListener('mousemove', cb);
-	window.addEventListener('mouseup', () => window.removeEventListener('mousemove', cb), { once: true });
-})
-
-editBottom.addEventListener('mousedown', function(e) {
-	let cb = e => {
-		edit.style.height = e.pageY - edit.getBoundingClientRect().top + 'px';
-		edit.style.width = edit.clientWidth + "px";
-	}
-	window.addEventListener('mousemove', cb);
-	window.addEventListener('mouseup', () => window.removeEventListener('mousemove', cb), { once: true });
-})
-
-editBottomRight.addEventListener('mousedown', function(e) {
-	let cb = e => {
-		edit.style.width = e.pageX - edit.getBoundingClientRect().left + 'px';
-		edit.style.height = e.pageY - edit.getBoundingClientRect().top + 'px';;
-	}
-	window.addEventListener('mousemove', cb);
-	window.addEventListener('mouseup', () => window.removeEventListener('mousemove', cb), { once: true });
-})
 
 edit.addEventListener('mousedown', function(e) {
 	let cb = e => {
@@ -211,6 +208,7 @@ btn_captured.addEventListener("click", () => {
 	canvas.style.display = "block";
 	filters.style.display = "block";
 	disabledWebcam();
+	cadre_div.style.display = "none";
 })
 
 document.addEventListener("keydown", e => {
@@ -223,6 +221,9 @@ document.addEventListener("keydown", e => {
 		canvas.style.display = "none";
 		filters.style.display = "none";
 		btn_save.style.display = "none";
+		cadre_src.src = "";
+		cadre_src.style.height = 0;
+		cadre_div.style.display = "block";
 	}
 	else if (e.key == "Escape" && toggle.checked) {
 		img_input.style.display = "block";

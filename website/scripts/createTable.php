@@ -1,14 +1,15 @@
 <?php
 $tableUser = "CREATE TABLE IF NOT EXISTS user
 	(
-		`user_id`	INT AUTO_INCREMENT PRIMARY KEY,
-        `email`		VARCHAR(255) NOT NULL UNIQUE,
-        `username`	VARCHAR(255) NOT NULL UNIQUE,
-		`password`	VARCHAR(255) NOT NULL,
-        `token`		VARCHAR(255) NOT NULL,
-		`img_id`	INT	NULL UNIQUE,
-		`activate`	boolean DEFAULT false,
-		`notif`		boolean DEFAULT true
+		`user_id`		INT AUTO_INCREMENT PRIMARY KEY,
+        `email`			VARCHAR(255) NOT NULL UNIQUE,
+        `username`		VARCHAR(255) NOT NULL UNIQUE,
+		`password`		VARCHAR(255) NOT NULL,
+        `token`			VARCHAR(255) NOT NULL,
+		`img_id`		INT	NULL UNIQUE,
+		`activate`		boolean DEFAULT false,
+		`notif`			boolean DEFAULT true,
+		`reset_token`	VARCHAR(255)
 	);";
 
 $tableImg = "CREATE TABLE IF NOT EXISTS img
@@ -26,8 +27,16 @@ $tableComment = "CREATE TABLE IF NOT EXISTS comment
 		`comment`		TEXT NOT NULL
 	);";
 
+$tableLike = "CREATE TABLE IF NOT EXISTS comment
+	(
+		`like_id`	INT AUTO_INCREMENT PRIMARY KEY,
+		`img_id`	INT NOT NULL,
+		`user_id`	INT NOT NULL
+	);";
+
 require($_SERVER['DOCUMENT_ROOT'] . "/utilitys/connect.php");
 
 $conn->exec($tableUser);
 $conn->exec($tableImg);
 $conn->exec($tableComment);
+$conn->exec($tableLike);

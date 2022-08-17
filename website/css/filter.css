@@ -47,67 +47,32 @@
 	border: 3px solid #4286f4;
 }
 
-.nw {
-	top: calc(var(--size-block) * -1);
-	left: calc(var(--size-block) * -1);
-	cursor: nwse-resize; 
-}
-
-.n {
-	top: calc(var(--size-block) * -1);
-	left: calc(50% - var(--size-block));
-	cursor: ns-resize;
-}
-
-.ne {
-	right: calc(var(--size-block) * -1);
-	top: calc(var(--size-block) * -1);
-	cursor: nesw-resize;
-}
-
-.w {
-	left: calc(var(--size-block) * -1);
-	top: calc(50% - var(--size-block));
-	cursor: ew-resize;
-}
-
-.e {
-	right: calc(var(--size-block) * -1);
-	top: calc(50% - var(--size-block));
-	cursor: ew-resize;
-}
-
-.sw {
-	bottom: calc(var(--size-block) * -1);
-	left: calc(var(--size-block) * -1);
-	cursor: nesw-resize;
-}
-
-.s {
-	bottom: calc(var(--size-block) * -1);
-	left: calc(50% - var(--size-block));
-	cursor: ns-resize;
-}
-
-.se {
-	bottom: calc(var(--size-block) * -1);
-	right: calc(var(--size-block) * -1);
-	cursor: nwse-resize;
-}
-
 .canvas {
 	position: relative;
 }
 
 .filter-edit button {
 	position: absolute;
-	bottom: -45px;
+	width: 50px;
+	height: 50px;
 }
 
 .filter-edit button:nth-of-type(1) {
-	left: 0;
+	left: -20px;
+	bottom: -55px;
 }
 
 .filter-edit button:nth-of-type(2) {
-	right: 0;
+	right: -20px;
+	bottom: -55px;
+}
+
+.filter-edit button:nth-of-type(3) {
+	right: -100px;
+	top: -20px;
+}
+
+.filter-edit button:nth-of-type(4) {
+	right: -100px;
+	bottom: -20px;
 }

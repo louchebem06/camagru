@@ -1,6 +1,6 @@
 <?php
 	require_once($_SERVER['DOCUMENT_ROOT'] . "/functions/validUser.php");
-	require($_SERVER['DOCUMENT_ROOT'] . "/utilitys/connect.php");
+	include($_SERVER['DOCUMENT_ROOT'] . "/utilitys/connect.php");
 	require_once($_SERVER['DOCUMENT_ROOT'] . "/functions/getUsername.php");
 	require_once($_SERVER['DOCUMENT_ROOT'] . "/functions/getPicture.php");
 ?>

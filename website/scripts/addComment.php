@@ -24,9 +24,11 @@ $img = $state->fetch(PDO::FETCH_ASSOC);
 
 require($_SERVER['DOCUMENT_ROOT'] . "/functions/getMail.php");
 require($_SERVER['DOCUMENT_ROOT'] . "/functions/getNotification.php");
+require($_SERVER['DOCUMENT_ROOT'] . "/functions/getUsername.php");
 
 if (getNotification($img['user_id'])) {
 	$email = getMail($img['user_id']);
+	$username = getUsername($img['user_id']);
 
 	$headers = 'Content-Type: text/html; charset="UTF-8"'."n";
 	$subject = 'New comment on picture';

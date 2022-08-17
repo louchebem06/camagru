@@ -16,6 +16,8 @@
 	}
 
 	$dirFilter = "/img/filter/";
+	$dirCadre = "/img/cadre/";
+
 	$filter = [
 		$dirFilter . "chapeau0.png",
 		$dirFilter . "chapeau1.png",
@@ -26,6 +28,13 @@
 		$dirFilter . "courone0.png",
 		$dirFilter . "courone1.png",
 		$dirFilter . "oreole.png"
+	];
+
+	$cadre = [
+		$dirCadre . "0.png",
+		$dirCadre . "1.png",
+		$dirCadre . "2.png",
+		$dirCadre . "3.png"
 	];
 ?>
 
@@ -62,6 +71,16 @@
 			<p id="messageMode">Webcam Mode</p>
 		</div>
 
+		<div class="box filter-elements" id="cadre">
+			<?php
+				$id = 0;
+				foreach ($cadre as $v) {
+					echo "<img id=\"cadre-{$id}\" src=\"{$v}\"/>";
+					$id++;
+				}
+			?>
+		</div>
+
 		<div class="box filter-elements" id="filter">
 			<?php
 				$id = 0;
@@ -76,6 +95,9 @@
 			<input type="file" accept="image/*" id="img_input"/>
 			<div class="video" id="div-video">
 				<video id="video"></video>
+				<div class="cadre_div" id="cadre_div">
+					<img src="" id="cadre_src"/>
+				</div>
 				<div class="lds-ripple" id="loading"><div></div><div></div></div>
 				<div class="captured" id="captured"></div>
 				<div id="cameraError">
@@ -87,17 +109,11 @@
 			<div class="canvas" id="div_canvas">
 				<canvas id="canvas"></canvas>
 				<div class="filter-edit nonSelectionnable" id="edit">
-					<div class="block nw"></div>
-					<div class="block n"></div>
-					<div class="block ne"></div>
-					<div class="block w"></div>
-					<div class="block e" id="right"></div>
-					<div class="block sw"></div>
-					<div class="block s" id="bottom"></div>
-					<div class="block se" id="bottom-right"></div>
 					<img id="src-edit" draggable="false" />
 					<button onclick="disabledFilter()">Remove</button>
 					<button onclick="applyFilter()">Valider</button>
+					<button onclick="upSize()">Size up</button>
+					<button onclick="downSize()">Size down</button>
 				</div>
 			</div>
 		</div>
