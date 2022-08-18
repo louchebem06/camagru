@@ -27,7 +27,7 @@ $tableComment = "CREATE TABLE IF NOT EXISTS comment
 		`comment`		TEXT NOT NULL
 	);";
 
-$tableLike = "CREATE TABLE IF NOT EXISTS comment
+$tableLike = "CREATE TABLE IF NOT EXISTS `like`
 	(
 		`like_id`	INT AUTO_INCREMENT PRIMARY KEY,
 		`img_id`	INT NOT NULL,

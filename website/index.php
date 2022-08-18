@@ -13,6 +13,8 @@
 	require($_SERVER['DOCUMENT_ROOT'] . "/scripts/createTable.php");
 	require($_SERVER['DOCUMENT_ROOT'] . "/functions/getUsername.php");
 	require($_SERVER['DOCUMENT_ROOT'] . "/functions/getPicture.php");
+	require($_SERVER['DOCUMENT_ROOT'] . "/functions/isLike.php");
+	require($_SERVER['DOCUMENT_ROOT'] . "/functions/nbLike.php");
 	require($_SERVER['DOCUMENT_ROOT'] . "/utilitys/connect.php");
 
 	$sql = "SELECT * FROM `img` ORDER BY `img_id` DESC";
@@ -57,7 +59,17 @@
 						<button onclick="removePicture(<?php echo $img_id ?>)" >Remove</button>
 						<?php
 					}
+					if (isset($_SESSION['id'])) {
+						?>
+						<button onclick="likePicture(<?php echo $img_id ?>)" id="btn_like_<?php echo $img_id ?>">
+							<?php
+								echo ((isLike($img_id)) ? "Like" : "Dislike");
+							?>
+						</button>
+						<?php
+					}
 				?>
+				<p id="like_counter_<?php echo $img_id ?>">Like: <?php echo nbLike($img_id) ?></p>
 				<?php
 					if (isset($_SESSION['id'])) { ?>
 					<form method="POST" action="/scripts/addComment.php">
@@ -88,6 +100,30 @@
 	<?php include($_SERVER['DOCUMENT_ROOT'] . "/footer.php") ?>
 
 </body>
+
+	<script>
+		function likePicture(id_img) {
+			const btn_like = document.getElementById(`btn_like_${id_img}`);
+			const like_counter = document.getElementById(`like_counter_${id_img}`);
+			const url = "/scripts/likePicture.php";
+
+			let data = new URLSearchParams();
+			data.append(`id_img`, `${id_img}`);
+
+			let result = fetch(url, {method:'post', body: data})
+				.then((response) => response.json())
+				.then((responseData) => {
+					return responseData;
+				})
+				.catch(error => console.warn(error)
+			);
+				
+			result.then(async function(response) {
+				btn_like.innerHTML = response.msg;
+				like_counter.innerHTML = "Like: " + response.counter;
+			});
+		}
+	</script>
 
 	<script>
 		function removePicture(id_img) {
