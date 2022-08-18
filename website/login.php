@@ -40,7 +40,7 @@
 		</form>
 
 		<div class="box" >
-			<a href="#">Forget password ?</a>
+			<a href="/resetPassword.php">Forget password ?</a>
 		</div>
 		
 	</div>

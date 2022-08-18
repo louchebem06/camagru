@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 if (!isset($_SESSION['id']) || empty($_SESSION['id'])
 	|| !isset($_POST['password']) || empty($_POST['password'])
 	|| !isset($_POST['repassword']) || empty($_POST['repassword'])) {

@@ -51,6 +51,14 @@
 				</a>
 				<img src="<?php echo $file ?>"/>
 				<?php
+					if (isset($_SESSION['id'])
+						&& $value['user_id'] == $_SESSION['id']) {
+						?>
+						<button onclick="removePicture(<?php echo $img_id ?>)" >Remove</button>
+						<?php
+					}
+				?>
+				<?php
 					if (isset($_SESSION['id'])) { ?>
 					<form method="POST" action="/scripts/addComment.php">
 						<input type="hidden" value="<?php echo $img_id ?>" name="id_img"/>
@@ -82,6 +90,30 @@
 </body>
 
 	<script>
+		function removePicture(id_img) {
+			const url = "/scripts/removeImg.php";
+
+			let data = new URLSearchParams();
+			data.append(`id_img`, `${id_img}`);
+
+			let result = fetch(url, {method:'post', body: data})
+				.then((response) => response.json())
+				.then((responseData) => {
+					return responseData;
+				})
+				.catch(error => console.warn(error)
+			);
+				
+			result.then(async function(response) {
+				if (response.msg == "ok") {
+					const div_remove = document.getElementById(id_img);
+					div_remove.remove();
+				}
+			});
+		}
+	</script>
+
+	<script>
 		function getComment(id_img) {
 			const url = "/scripts/getComment.php";
 
@@ -93,7 +125,8 @@
 				.then((responseData) => {
 					return responseData;
 				})
-				.catch(error => console.warn(error));
+				.catch(error => console.warn(error)
+			);
 				
 			result.then(async function(response) {
 				const comments = document.getElementById(`comments_${id_img}`);
