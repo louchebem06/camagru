@@ -16,7 +16,7 @@ RUN apt upgrade -y
 RUN a2dismod autoindex -f
 RUN service apache2 restart
 RUN echo "ServerName 127.0.0.1" >> "/etc/apache2/apache2.conf"
-RUN apt install php8.1-mysql php8.1-gd -y
+RUN apt install php8.1-mysql php8.1-imagick -y
 RUN apt install -y sendmail sendmail-cf m4
 RUN echo "define('SMART_HOST','smtp.sipartech.com')" >> /etc/mail/sendmail.mc
 RUN echo "GENERICS_DOMAIN(localhost.localdomain localhost)dnl" >> /etc/mail/sendmail.mc
