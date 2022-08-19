@@ -122,9 +122,9 @@
 			<button onclick="save()">Sauvegarder</button>
 		</div>
 		
-	</div>
+		<div class="box" id="newPicture" style="display: none;"></div>
 
-	<?php include($_SERVER['DOCUMENT_ROOT'] . "/footer.php") ?>
+	</div>
 
 </body>
 	<script src="/js/editPicture.js"></script>

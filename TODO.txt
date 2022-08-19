@@ -1,4 +1,1 @@
-TRAIMENT IMG PHP VIA FETCH
-IMG SESSION SHOOT
-ADD COMMENT, LIKE AND REMOVE IN PROFIL
-RAPID LINK SHARE // https://www.tumblr.com/
+Traitement img php, finir filter

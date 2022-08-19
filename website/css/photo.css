@@ -28,3 +28,32 @@
 .pagination a b {
 	font-size: 16px;
 }
+
+.imgContent {
+	position: relative;
+}
+
+.like_comment img {
+	height: 50px;
+	width: 50px;
+	cursor: pointer;
+}
+
+.like_comment {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	display: flex;
+	color: white;
+	transform: translate(-50%, -50%);
+	background-color: rgba(255, 0, 0, 0.45);
+	padding: 5px;
+	border-radius: 5px;
+	visibility: hidden;
+}
+
+.likeBox {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+} 

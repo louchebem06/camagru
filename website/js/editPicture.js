@@ -1,5 +1,4 @@
 // Element
-
 const edit = document.getElementById("edit");
 const div_canvas = document.getElementById('div_canvas');
 const filters = document.getElementById('filter');
@@ -16,10 +15,27 @@ const btn_save = document.getElementById('btn_save');
 const cadre_src = document.getElementById('cadre_src');
 const cadre_div = document.getElementById('cadre');
 
+let state = [];
+
 // Function
 function writeElement(filter, x, y, sizeX, sizeY) {
 	const context = canvas.getContext('2d');
 	context.drawImage(filter, x, y, sizeX, sizeY);
+	
+	const path = filter.src.split('/');
+	const filename = path[path.length - 1];
+	const type = path[path.length - 2];
+	
+	if (type == "filter") {
+		const file = `/img/${type}/${filename}`;
+		state.push({
+			"filter": file,
+			"x":x,
+			"y":y,
+			"width": sizeX,
+			"height":sizeY
+		});
+	}
 }
 
 function takepicture() {
@@ -28,8 +44,11 @@ function takepicture() {
 	edit.width = canvas.width = 600;
 	edit.height = canvas.height = video.videoHeight / ratio;
 	context.drawImage(video, 0, 0, canvas.width, canvas.height);
+	const picture = canvas.toDataURL('image/png');
 	writeElement(cadre_src, 0, 0, canvas.width, canvas.height);
 	btn_save.style.display = "block";
+
+	state.push({"picture": picture});
 }
 
 function inputPicture(img) {
@@ -40,8 +59,8 @@ function inputPicture(img) {
 			edit.width = canvas.width = 600;
 			edit.height = canvas.height = imageBitmap.height / ratio;
 			context.drawImage(imageBitmap, 0, 0, canvas.width, canvas.height);
+			state.push({"picture": canvas.toDataURL('image/png')});
 		});
-	btn_save.style.display = "block";
 }
 
 function activateWebcam() {
@@ -108,28 +127,57 @@ function getPicture() {
 }
 
 function modeEdit(toggleState) {
+	resetState();
 	const msg = document.getElementById("messageMode");
 	disabledFilter();
+	cadre_src.src = "";
+	cadre_src.style.height = 0;
 	btn_save.style.display = "none";
+	btn_captured.style.display = "none"
 	if (!toggleState) {
 		msg.innerHTML = "Webcam Mode";
 		img_input.style.display = "none";
 		canvas.style.display = "none";
 		filters.style.display = "none";
 		activateWebcam();
+		cadre_div.style.display = "block";
 	} else {
 		msg.innerHTML = "Upload Mode";
 		img_input.style.display = "block";
 		disabledWebcam();
+		cadre_div.style.display = "none";
 	}
 }
 
+function escape() {
+	loading.style.display = "block";
+	btn_captured.style.display = "none";
+	disabledFilter();
+	activateWebcam();
+	div_video.style.display = "block";
+	canvas.style.display = "none";
+	filters.style.display = "none";
+	btn_save.style.display = "none";
+	cadre_src.src = "";
+	cadre_src.style.height = 0;
+	cadre_div.style.display = "block";
+}
+
+function noEscape() {
+	img_input.style.display = "block";
+	img_input.value = null;
+	canvas.style.display = "none";
+	filters.style.display = "none";
+	disabledFilter();
+	btn_save.style.display = "none";
+}
+
 function save() {
-	const picture = getPicture();
 	const url = "/scripts/base64ToImg.php";
 
 	let data = new URLSearchParams();
-	data.append(`data`, `${picture}`);
+	const push = JSON.stringify(state);
+	data.append(`data`, `${push}`);
 
 	let result = fetch(url, {method:'post', body: data})
 		.then((response) => response.json())
@@ -140,11 +188,22 @@ function save() {
 		
 	result.then(async function(response) {
 		if (response.msg == "ok") {
-			document.location.href="/profil.php"; 
-		} else {
-			console.log("It should never have happened, please retry btn");
+			let file = response.file;
+			let newPicture = document.getElementById('newPicture');
+			let img = document.createElement('img');
+			img.src = file;
+			newPicture.appendChild(img);
+			newPicture.style.display = "block";
+			if (toggle.checked == false) {
+				escape();
+			}
+			else if (toggle.checked) {
+				noEscape();
+			}
 		}
 	});
+
+	resetState();
 }
 
 function upSize() {
@@ -153,6 +212,10 @@ function upSize() {
 
 function downSize() {
 	edit.style.width = src_edit.width - 10 + "px";
+}
+
+function resetState() {
+	state = [];
 }
 
 // Default
@@ -186,6 +249,11 @@ for (let i = 0; i < 4; i++) {
 		cadre_src.style.height = "100%";
 		cadre_src.style.borderRadius = "15px";
 		btn_captured.style.display = "block";
+		writeElement(cadre[i], 0, 0, canvas.width, canvas.height);
+		state.push({"cadre": cadre[i].getAttribute("src")});
+		cadre_div.style.display = "none";
+		if (toggle.checked)
+			btn_save.style.display = "block";
 	});
 }
 
@@ -213,25 +281,10 @@ btn_captured.addEventListener("click", () => {
 
 document.addEventListener("keydown", e => {
 	if (e.key == "Escape" && toggle.checked == false) {
-		loading.style.display = "block";
-		btn_captured.style.display = "none";
-		disabledFilter();
-		activateWebcam();
-		div_video.style.display = "block";
-		canvas.style.display = "none";
-		filters.style.display = "none";
-		btn_save.style.display = "none";
-		cadre_src.src = "";
-		cadre_src.style.height = 0;
-		cadre_div.style.display = "block";
+		escape();
 	}
 	else if (e.key == "Escape" && toggle.checked) {
-		img_input.style.display = "block";
-		img_input.value = null;
-		canvas.style.display = "none";
-		filters.style.display = "none";
-		disabledFilter();
-		btn_save.style.display = "none";
+		noEscape();
 	}
 	else if (e.key == "m" || e.key == "M") {
 		toggle.checked = !toggle.checked;
@@ -251,4 +304,5 @@ img_input.addEventListener('change', e => {
 	canvas.style.display = "block";
 	filters.style.display = "block";
 	img_input.style.display = "none";
+	cadre_div.style.display = "block";
 });
