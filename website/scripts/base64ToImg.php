@@ -13,8 +13,8 @@ $picture = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEBCAMAAAD1kWivAA
 $cadre = imagecreatefrompng($_SERVER['DOCUMENT_ROOT'] . "/img/cadre/3.png");
 class T {
 	public $filter = "/img/filter/courone1.png";
-	public $x = 50;
-	public $y = 50;
+	public $x = 10;
+	public $y = 10;
 	public $width = 140;
 	public $height = 83;
 };
@@ -37,12 +37,11 @@ $d = new T;
 // 	}
 // }
 
-/*
-	todo fix filter element placing
-*/
 function writeElement($dest, $src, $x, $y, $width, $height) {
+	imageAlphaBlending($src, true);
+	imageSaveAlpha($src, true);
 	$scaled = imagescale($src, $width, $height);
-	imagecopy($dest, $scaled, 0, 0, 0, 0, $width, $height);
+	imagecopy($dest, $scaled, $x, $y, 0, 0, $width, $height);
 }
 
 $image_parts = explode(";base64,", $picture);
