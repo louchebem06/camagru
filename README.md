@@ -1,1 +1,1 @@
-<a href="https://camagru.bryanledda.fr">demo</a>
+<a href="https://camagru.bryanledda.fr" target="_blank">demo</a>
